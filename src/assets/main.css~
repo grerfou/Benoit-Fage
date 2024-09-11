@@ -1,0 +1,106 @@
+/*@import './base.css';*/
+
+body
+{
+  display: block;
+}
+
+#app 
+{
+  display: block;
+  margin: 9px;
+}
+
+header
+{
+  font-family: Office_code_pro;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  border-radius: 20px 20px 0px 0px;
+  height: 5vh;
+}
+
+.Column
+{
+  top: 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.parentElement 
+{
+  margin: 0;
+  paddind: 0;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 0px;
+  grid-column-gap: 0px;
+  border: 2px solid black;
+  height: 92vh;
+}
+
+.child1
+{
+}
+
+.child2
+{
+}
+
+.child4 
+{ 
+  border-right: 2px solid black;
+  grid-row: 1 / span 2;
+} 
+
+@media (max-width: 750px) {
+  body {
+    display: block;
+  }
+
+  #app {
+    display: block;
+    padding: 0 2rem;
+  }
+
+  header
+  {
+    display: block;
+  }
+  .parentsElements
+  {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: normal;
+    align-items: normal;
+    align-content: normal;
+  }
+  .child1
+  {
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+  }
+  .child2
+  {
+    display: block;
+    flex-grow: 0;
+    flex-shrink: 1;
+    flex-basis: auto;
+    align-self: auto;
+    order: 0;
+  }
+  .child4
+  {
+  }
+}

@@ -1,0 +1,30 @@
+header
+{
+  grid-template-columns: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 5vh;
+}
+
+.Column
+{
+  top: 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+
+.parentElement
+{
+  display: block;
+  grid-template-columns: 1fr;
+  grid-template-rows: 4;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 92vh;
+}
+
+.child1
+{
+  display: block;
+}

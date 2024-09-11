@@ -1,35 +1,54 @@
-@import './base.css';
+/*@import './base.css';*/
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
+body
+{
+  display: block;
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-  padding: 3px;
+
+#app 
+{
+  display: block;
+  margin: 9px;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+header
+{
+  font-family: Office_code_pro;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  border-top: 2px solid black;
+  border-radius: 20px 20px 0px 0px;
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+.parentElement 
+{
+  margin: 0;
+  paddind: 0;
+  display: grid;
+  border: 2px solid black;
 }
+
+.child1
+{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.child2
+{
+}
+
+.child4 
+{ 
+  border-right: 2px solid black;
+  grid-row: 1 / span 2;
+} 
+
+
