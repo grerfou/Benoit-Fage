@@ -14,6 +14,28 @@ header
 }
 
 
+.FlexContainer {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: stretch;
+  align-content: baseline;
+  width: 100%;
+  height: 3vh;
+  overflow: auto;
+  flex-direction: row;
+}
+
+.flex-item {
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+  font-size: 1rem;
+}
+
 .parentElement
 {
   display: block;
@@ -22,9 +44,7 @@ header
   grid-column-gap: 0px;
   grid-row-gap: 0px;
   height: 92vh;
+  border: 2px solid black;
+  margin-top: 0.5vh;
 }
 
-.child1
-{
-  display: block;
-}

@@ -1,6 +1,8 @@
 <script setup>
 import TroiD from './Small/TroiD.vue'
 import ImageSrc from './ImageScr.vue'
+import LateMe from './Small/LateMe.vue' 
+
 
 </script>
 
@@ -8,32 +10,17 @@ import ImageSrc from './ImageScr.vue'
 
 <template>
 
-<header>
-    <div class="Column"> About </div>
-    <div class="Column"> Project </div>
-</header>
+  <TroiD :modelDisplayTime="3000" />
 
-<div class="parentElement">
-
-  <div class="child1">
-      <TroiD modelUrl="./public/model/ant.glb" :scale="{ x: 2, y: 2, z: 2 }" :rotation="{ x: Math.PI / 4, y: Math.PI / 4, z: 0 }" :rotationSpeed="{ x: 0, y: 0.2, z: 0 }" />
-  </div>
-  <div class="child2">
-    <ImageSrc/>
-  </div>
-  <div class="child4">
-    <div>
-      <a href=""><h3>Book's_Particles</h3></a>
-      <a href=""><h3>Turing_Glasses</h3></a>
-      <a href=""><h3>Self_molding</h3></a>
-      <a href=""><h3>Ambient_Exp</h3></a>
-      <a href=""><h3>Ant_footprint</h3></a>
-      <a href=""><h3>Whether_Organism</h3></a>
-      <a href=""><h3>Room_tour</h3></a>
-    </div>
+  <div class="FlexContainer">
+    <div class="flex-item">BF</div>
+    <div class="flex-item">benoit fage</div>
+    <div class="flex-item">menu</div>
   </div>
 
-</div>
+  <div class="parentElement">
+  </div>
+
 
 </template>
 
@@ -48,7 +35,6 @@ export default {
 
 
 <style scoped>
-@import './../assets/main.css';
 @import './../assets/SmallComponent.css';
 </style>
 

@@ -1,0 +1,85 @@
+<template>
+  <div>
+    <!-- Bouton pour ouvrir le menu -->
+    <button @click="toggleMenu" class="menu-button">../↵</button>
+
+    <!-- Menu latéral -->
+    <div :class="['sidebar', { 'sidebar-open': isOpen }]">
+      <ul>
+        <li><a href="#">Project</a></li>
+        <li><a href="#">About</a></li>
+      </ul>
+    </div>
+
+    <!-- Couche de fond sombre lorsque le menu est ouvert -->
+    <div v-if="isOpen" class="overlay" @click="toggleMenu"></div>
+  </div>
+</template>
+
+<script>
+import { ref } from 'vue';
+
+export default {
+  setup() {
+    const isOpen = ref(false);
+
+    const toggleMenu = () => {
+      isOpen.value = !isOpen.value;
+    };
+
+    return { isOpen, toggleMenu };
+  },
+};
+</script>
+
+<style scoped>
+.menu-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -250px;
+  width: 0px;
+  height: 0%;
+  background-color: #222;
+  color: #fff;
+  /*padding: 100px;*/
+  transition: left 0.3s ease-in-out;
+  z-index: 1001;
+}
+
+.sidebar-open {
+  left: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 100px;
+}
+
+
+.sidebar a {
+  color: black;
+  text-decoration: none;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+}
+</style>
+
