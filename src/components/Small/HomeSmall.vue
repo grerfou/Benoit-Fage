@@ -1,5 +1,5 @@
 <script setup>
-//import TroiD from './PageComponents/TroiD.vue'
+import TroiD from './PageComponents/TroiD.vue'
 import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 </script>
 
@@ -7,7 +7,7 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 <template>
 
   <FullScreenMenu />
-  <!-- <TroiD :modelDisplayTime="3000" />  -->
+  <TroiD :modelDisplayTime="3000" />  
   <div class="parentElement">
     <div>
       Creative Coder <br> &nbsp &nbsp &nbsp;  ~ Artist 

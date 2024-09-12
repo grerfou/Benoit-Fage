@@ -16,9 +16,12 @@
       <div class="menu-content">
         <!-- Contenu du menu -->
         <ul>
-          <li><a href="#section1">Works</a></li>
+          <li><router-link to="/" @click.native="toggleMenu">Home</router-link></li>
+          <li><router-link to="/about" @click.native="toggleMenu">Work</router-link></li>
+          <li><router-link to="/contact" @click.native="toggleMenu">About</router-link></li>
+          <!-- <li><a href="#section1">Works</a></li>
           <li><a href="#section2">About</a></li>
-          <li><a href="#section3">Contact</a></li>
+          <li><a href="#section3">Contact</a></li> -->
         </ul>
       </div>
     </div>
@@ -62,16 +65,6 @@ export default {
 }
 
 
-
-ul
-{
-  list-style-type: none;
-}
-
-a
-{
-  color: rgba(255, 255, 255, 1);
-}
 
 /* Style du conteneur flexible */
 .FlexContainer {

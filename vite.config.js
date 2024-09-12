@@ -25,6 +25,7 @@ import vue from '@vitejs/plugin-vue';
 
 export default defineConfig({
   plugins: [vue()],
+  assetsInclude: ['**/*.glb'],
   build: {
     sourcemap: false // Assurez-vous que les cartes sources sont activées
   }

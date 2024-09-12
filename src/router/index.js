@@ -36,7 +36,7 @@ import AboutLarge from '../components/Large/AboutLarge.vue';
 import ContactLarge from '../components/Large/ContactLarge.vue';
 
 import HomeSmall from '../components/Small/HomeSmall.vue';
-import AboutSmall from '../components/Small/AboutSmall.vue';
+import AboutSmall from '../components/Small/WorkSmall.vue';
 import ContactSmall from '../components/Small/ContactSmall.vue';
 
 // Routes pour grands écrans
@@ -80,4 +80,3 @@ export const setupRouter = (isLargeScreen) => {
 };
 
 export default router;
-

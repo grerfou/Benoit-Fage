@@ -1,5 +1,6 @@
 <script setup>
 import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
+import ProjectMenu from './PageComponents/ProjectMenu.vue';
 </script>
 
 
@@ -8,9 +9,7 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 
   <FullScreenMenu />
   <div class="parentElement">
-    <div>
-      Creative Coder <br> &nbsp &nbsp &nbsp;  ~ Artist 
-    </div>
+    <ProjectMenu/>
   </div>
 
 </template>

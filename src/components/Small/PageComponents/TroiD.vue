@@ -5,8 +5,8 @@
 <script setup>
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
-
 
 // Import des fichiers GLTF comme assets
 import model1Url from '/public/model/Boid.glb';
@@ -20,8 +20,6 @@ const models = [
   { url: model3Url, position: { x: 0, y: 1, z: 0 }, rotation: { x: 2, y: 1, z: 0 } }
 ];
 
-
-
 // Objet de cache des modèles
 const modelCache = {};
 
@@ -34,15 +32,19 @@ const props = defineProps({
 });
 
 // Références et état non réactif
-const backgroundContainer = ref(null); // Référence au conteneur DOM
-const scene = shallowRef(null); // Référence non réactive pour la scène
-const camera = shallowRef(null); // Référence non réactive pour la caméra
-const renderer = shallowRef(null); // Référence non réactive pour le renderer
-const mixer = shallowRef(null); // Référence non réactive pour le mixer
-const clock = shallowRef(new THREE.Clock()); // Référence non réactive pour l'horloge
-const activeModel = shallowRef(null); // Référence non réactive pour le modèle actif
-const currentModelIndex = ref(0); // Référence réactive pour l'index du modèle actuel
-const isMoving = ref(false); // État pour savoir si le modèle est en mouvement
+const backgroundContainer = ref(null);
+const scene = shallowRef(null);
+const camera = shallowRef(null);
+const renderer = shallowRef(null);
+const mixer = shallowRef(null);
+const clock = shallowRef(new THREE.Clock());
+const activeModel = shallowRef(null);
+const currentModelIndex = ref(0);
+const isMoving = ref(false);
+
+// Fréquence d'animation
+let lastFrameTime = 0;
+const maxFPS = 30; // Limiter à 30 FPS
 
 // Fonction pour initialiser Three.js
 function initThree() {
@@ -51,20 +53,22 @@ function initThree() {
   camera.value = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.value.position.z = 5;
 
-  renderer.value = new THREE.WebGLRenderer({ alpha: true });
+  renderer.value = new THREE.WebGLRenderer({ alpha: true, antialias: false }); // Désactive l'antialiasing
+  renderer.value.setPixelRatio(window.devicePixelRatio * 0.5); // Réduit la résolution de rendu
   renderer.value.setSize(window.innerWidth, window.innerHeight);
   renderer.value.setClearColor(0x000000, 0); // Fond transparent
+  renderer.value.sortObjects = false; // Désactive le tri des objets
   backgroundContainer.value.appendChild(renderer.value.domElement);
 
   const light = new THREE.AmbientLight(0x404040);
   scene.value.add(light);
 
   window.addEventListener('resize', onWindowResize);
-  window.addEventListener('touchstart', onTouchStart); // Écouteur pour le début du toucher
-  window.addEventListener('touchend', onTouchEnd); // Écouteur pour la fin du toucher
+  window.addEventListener('touchstart', onTouchStart);
+  window.addEventListener('touchend', onTouchEnd);
 }
 
-// Fonction pour charger un modèle (avec mise en cache)
+// Fonction pour charger un modèle (avec mise en cache et compression Draco)
 function loadModel(index) {
   if (index >= models.length) return;
 
@@ -76,9 +80,12 @@ function loadModel(index) {
     setModel(modelCache[url], position, rotation);
   } else {
     const loader = new GLTFLoader();
+    const dracoLoader = new DRACOLoader();
+    dracoLoader.setDecoderPath('/path/to/draco/'); // Définir le chemin vers le dossier des décodeurs Draco
+    loader.setDRACOLoader(dracoLoader);
+
     loader.load(url, (gltf) => {
-      // Mettre en cache le modèle chargé
-      modelCache[url] = gltf.scene.clone(); // Cloner pour éviter les références partagées
+      modelCache[url] = gltf.scene.clone();
       setModel(modelCache[url], position, rotation);
     }, undefined, (error) => {
       console.error(`Error loading model: ${url}`, error);
@@ -94,6 +101,7 @@ function setModel(model, position, rotation) {
       if (child.isMesh) {
         child.geometry.dispose();
         child.material.dispose();
+        if (child.material.map) child.material.map.dispose(); // Nettoyage des textures
       }
     });
   }
@@ -108,8 +116,8 @@ function setModel(model, position, rotation) {
   activeModel.value.traverse((child) => {
     if (child.isMesh) {
       child.material = new THREE.MeshBasicMaterial({
-        color: 0x000000, // Couleur noire
-        wireframe: true // Affichage en mode wireframe
+        color: 0x000000,
+        wireframe: true
       });
     }
   });
@@ -136,21 +144,27 @@ function setModel(model, position, rotation) {
 }
 
 // Fonction d'animation
-function animate() {
+function animate(time) {
   requestAnimationFrame(animate);
 
-  const delta = clock.value.getDelta();
+  const delta = time - lastFrameTime;
+  const interval = 1000 / maxFPS;
 
-  if (isMoving.value && activeModel.value) {
-    // Faire tourner le modèle lorsque isMoving est true
-    activeModel.value.rotation.y += delta * 0.5; // Ajuster la vitesse de rotation selon tes besoins
+  if (delta > interval) {
+    lastFrameTime = time - (delta % interval);
+
+    const deltaTime = clock.value.getDelta();
+
+    if (isMoving.value && activeModel.value) {
+      activeModel.value.rotation.y += deltaTime * 0.5; // Ajuster la vitesse de rotation
+    }
+
+    if (mixer.value) {
+      mixer.value.update(deltaTime);
+    }
+
+    renderer.value.render(scene.value, camera.value);
   }
-
-  if (mixer.value) {
-    mixer.value.update(delta);
-  }
-
-  renderer.value.render(scene.value, camera.value);
 }
 
 // Gestion du toucher pour démarrer le mouvement
@@ -179,8 +193,8 @@ onMounted(() => {
 // Nettoyage avant la destruction du composant
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onWindowResize);
-  window.removeEventListener('touchstart', onTouchStart); // Supprimer l'écouteur du début du toucher
-  window.removeEventListener('touchend', onTouchEnd); // Supprimer l'écouteur de la fin du toucher
+  window.removeEventListener('touchstart', onTouchStart);
+  window.removeEventListener('touchend', onTouchEnd);
   if (renderer.value) {
     renderer.value.dispose();
   }
@@ -189,6 +203,7 @@ onBeforeUnmount(() => {
       if (child.isMesh) {
         child.geometry.dispose();
         child.material.dispose();
+        if (child.material.map) child.material.map.dispose(); // Nettoyage des textures
       }
     });
   }
@@ -202,8 +217,7 @@ onBeforeUnmount(() => {
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: -1; /* Assure que la scène reste en arrière-plan */
-  pointer-events: none; /* Permet de cliquer à travers */
+  z-index: -1;
+  pointer-events: none;
 }
 </style>
-

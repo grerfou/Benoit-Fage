@@ -9,6 +9,9 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
   <FullScreenMenu />
   <div class="parentElement">
     <div>
+      Contact
+    </div>
+    <div>
       Creative Coder <br> &nbsp &nbsp &nbsp;  ~ Artist 
     </div>
   </div>

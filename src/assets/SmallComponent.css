@@ -1,11 +1,12 @@
 
+
 .parentElement
 {
   display: flex;
   flex-direction: column-reverse;
   flex-wrap: nowrap;
   justify-content: space-between;
-  align-items: flex-end;
+  align-items: flex-start;
   align-content: flex-start;
 
   height: 87vh;
