@@ -1,40 +1,5 @@
-header
-{
-  grid-template-columns: 1fr;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  height: 5vh;
-}
-
-.Column
-{
-  top: 0;
-  font-size: 0.8rem;
-  text-align: center;
-}
 
 
-.FlexContainer {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: stretch;
-  align-content: baseline;
-  width: 100%;
-  height: 3vh;
-  overflow: auto;
-  flex-direction: row;
-}
-
-.flex-item {
-  display: flex;
-  flex-grow: 0;
-  flex-shrink: 1;
-  flex-basis: auto;
-  align-self: auto;
-  order: 0;
-  font-size: 1rem;
-}
 
 .parentElement
 {

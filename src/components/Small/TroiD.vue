@@ -17,8 +17,9 @@ import model3Url from '/public/model/try.glb';
 const models = [
   { url: model1Url, position: { x: 0, y: 0, z: 0 }, rotation: { x: 0, y: 0, z: 0 } },
   { url: model2Url, position: { x: 2, y: 0, z: -30 }, rotation: { x: 0, y: 5, z: 0 } },
-  { url: model3Url, position: { x: 0, y: 1, z: 0 }, rotation: { x: 1, y: 1, z: 0 } }
+  { url: model3Url, position: { x: 0, y: 1, z: 0 }, rotation: { x: 2, y: 1, z: 0 } }
 ];
+
 
 
 // Objet de cache des modèles
@@ -41,6 +42,7 @@ const mixer = shallowRef(null); // Référence non réactive pour le mixer
 const clock = shallowRef(new THREE.Clock()); // Référence non réactive pour l'horloge
 const activeModel = shallowRef(null); // Référence non réactive pour le modèle actif
 const currentModelIndex = ref(0); // Référence réactive pour l'index du modèle actuel
+const isMoving = ref(false); // État pour savoir si le modèle est en mouvement
 
 // Fonction pour initialiser Three.js
 function initThree() {
@@ -58,6 +60,8 @@ function initThree() {
   scene.value.add(light);
 
   window.addEventListener('resize', onWindowResize);
+  window.addEventListener('touchstart', onTouchStart); // Écouteur pour le début du toucher
+  window.addEventListener('touchend', onTouchEnd); // Écouteur pour la fin du toucher
 }
 
 // Fonction pour charger un modèle (avec mise en cache)
@@ -137,11 +141,26 @@ function animate() {
 
   const delta = clock.value.getDelta();
 
+  if (isMoving.value && activeModel.value) {
+    // Faire tourner le modèle lorsque isMoving est true
+    activeModel.value.rotation.y += delta * 0.5; // Ajuster la vitesse de rotation selon tes besoins
+  }
+
   if (mixer.value) {
     mixer.value.update(delta);
   }
 
   renderer.value.render(scene.value, camera.value);
+}
+
+// Gestion du toucher pour démarrer le mouvement
+function onTouchStart() {
+  isMoving.value = true;
+}
+
+// Gestion du toucher pour arrêter le mouvement
+function onTouchEnd() {
+  isMoving.value = false;
 }
 
 // Fonction pour gérer le redimensionnement de la fenêtre
@@ -160,6 +179,8 @@ onMounted(() => {
 // Nettoyage avant la destruction du composant
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onWindowResize);
+  window.removeEventListener('touchstart', onTouchStart); // Supprimer l'écouteur du début du toucher
+  window.removeEventListener('touchend', onTouchEnd); // Supprimer l'écouteur de la fin du toucher
   if (renderer.value) {
     renderer.value.dispose();
   }
