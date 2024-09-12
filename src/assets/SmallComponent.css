@@ -1,15 +1,29 @@
 
-
-
 .parentElement
 {
-  display: block;
-  grid-template-columns: 1fr;
-  grid-template-rows: 4;
-  grid-column-gap: 0px;
-  grid-row-gap: 0px;
-  height: 92vh;
+  display: flex;
+  flex-direction: column-reverse;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  align-content: flex-start;
+
+  height: 87vh;
   border: 2px solid black;
   margin-top: 0.5vh;
+  padding: 3vh;
+  font-family: 'NeuePowerTrial-Regular';
+  font-weight: 900;
+  font-Size: 3rem;
+  color: rgba(0, 0, 0, 0.7); 
 }
 
+.flex-item
+{
+  display: block;
+  flex-grow: 0;
+  flex-shrink: 1;
+  flex-basis: auto;
+  align-self: auto;
+  order: 0;
+}
