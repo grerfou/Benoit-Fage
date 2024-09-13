@@ -76,7 +76,7 @@ function loadModel(index) {
 
   // Vérifier si le modèle est déjà dans le cache
   if (modelCache[url]) {
-    console.log(`Using cached model: ${url}`);
+    //console.log(`Using cached model: ${url}`);
     setModel(modelCache[url], position, rotation);
   } else {
     const loader = new GLTFLoader();
@@ -208,6 +208,37 @@ onBeforeUnmount(() => {
     });
   }
 });
+
+
+
+/*
+
+
+camera.value.position.set(7, 4, 3);
+
+
+  // Ajouter des points au hasard
+  const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const positions = [
+    new THREE.Vector3(1, 2, 1),
+    new THREE.Vector3(-1, -0, 1),
+    new THREE.Vector3(1, -0, -1),
+    new THREE.Vector3(-1, 2, -1),
+    new THREE.Vector3(2, 1, 0),
+    new THREE.Vector3(0, 3, 0),
+    new THREE.Vector3(0, 1, 2)
+  ];
+
+
+  targetPosition.set(7, -2, 3);
+
+
+
+*/
+
+
+
+
 </script>
 
 <style scoped>

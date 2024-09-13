@@ -7,15 +7,13 @@
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;
-  align-content: flex-start;
+  align-content: flex-end;
 
   height: 87vh;
   border: 2px solid black;
   margin-top: 0.5vh;
   padding: 3vh;
-  font-family: 'NeuePowerTrial-Regular';
   font-weight: 900;
-  font-Size: 3rem;
   color: rgba(0, 0, 0, 0.7); 
 }
 
@@ -27,4 +25,10 @@
   flex-basis: auto;
   align-self: auto;
   order: 0;
+}
+
+.size
+{
+  font-size: 3rem;
+  font-family: 'NeuePowerTrial-Regular';
 }

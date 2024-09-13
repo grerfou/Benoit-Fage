@@ -64,6 +64,11 @@ export default {
     src: url('/public/font/NeuePowerTrial-Regular.woff');
 }
 
+@font-face {
+    font-family: 'TWKBurns-Light';
+    src: url('/public/font/TWKBurns-ExtraLight.woff2');
+}
+
 
 
 /* Style du conteneur flexible */

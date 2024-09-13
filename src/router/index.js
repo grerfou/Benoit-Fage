@@ -66,12 +66,12 @@ export const setupRouter = (isLargeScreen) => {
   if (isLargeScreen) {
     largeRoutes.forEach(route => {
       router.addRoute(route);
-      console.log(`Added route for large screen: ${route.path}`);
+      //console.log(`Added route for large screen: ${route.path}`);
     });
   } else {
     smallRoutes.forEach(route => {
       router.addRoute(route);
-      console.log(`Added route for small screen: ${route.path}`);
+      //console.log(`Added route for small screen: ${route.path}`);
     });
   }
 

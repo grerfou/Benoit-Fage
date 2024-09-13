@@ -9,7 +9,7 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
   <FullScreenMenu />
   <TroiD :modelDisplayTime="3000" />  
   <div class="parentElement">
-    <div>
+    <div class="size">
       Creative Coder <br> &nbsp &nbsp &nbsp;  ~ Artist 
     </div>
   </div>
