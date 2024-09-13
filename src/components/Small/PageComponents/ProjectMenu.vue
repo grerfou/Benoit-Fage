@@ -39,13 +39,13 @@ const selectedPoint = ref(null); // Point actuellement sélectionné
 
 // Liste des images associées aux titres
 const images = [
-  '/public/img/1.png',
-  '/public/img/2.jpg',
-  '/public/img/3.jpeg',
-  '/public/img/4.png',
-  '/public/img/5.png',
-  '/public/img/6.jpg',
-  '/public/img/7.png',
+  '/img/1.png',
+  '/img/2.jpg',
+  '/img/3.jpeg',
+  '/img/4.png',
+  '/img/5.png',
+  '/img/6.jpg',
+  '/img/7.png',
 ];
 
 // Liste des positions des points
