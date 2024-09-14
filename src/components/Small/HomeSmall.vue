@@ -5,7 +5,6 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 
 
 <template>
-
   <FullScreenMenu />
   <TroiD :modelDisplayTime="3000" />  
   <div class="parentElement">
@@ -13,7 +12,6 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
       Creative Coder <br> &nbsp &nbsp &nbsp;  ~ Artist 
     </div>
   </div>
-
 </template>
 
 <script>
@@ -25,4 +23,3 @@ export default {
 <style scoped>
 @import './../../assets/SmallComponent.css';
 </style>
-

@@ -18,7 +18,7 @@ import ProjectMenu from './PageComponents/ProjectMenu.vue';
 
 <script>
 export default {
-  name: 'LargeComponent'
+  name: 'SmallComponent'
 };
 </script>
 

@@ -17,11 +17,8 @@
         <!-- Contenu du menu -->
         <ul>
           <li><router-link to="/" @click.native="toggleMenu">Home</router-link></li>
-          <li><router-link to="/about" @click.native="toggleMenu">Work</router-link></li>
+          <li><router-link to="/work" @click.native="toggleMenu">Work</router-link></li>
           <li><router-link to="/contact" @click.native="toggleMenu">About</router-link></li>
-          <!-- <li><a href="#section1">Works</a></li>
-          <li><a href="#section2">About</a></li>
-          <li><a href="#section3">Contact</a></li> -->
         </ul>
       </div>
     </div>
@@ -69,6 +66,16 @@ export default {
     src: url('/public/font/TWKBurns-ExtraLight.woff2');
 }
 
+@font-face {
+    font-family: 'TWKBurns-Regular';
+    src: url('/public/font/TWKBurns-Regular.woff2');
+}
+
+a
+{
+  text-decoration: none;
+  color: white;
+}
 
 
 /* Style du conteneur flexible */

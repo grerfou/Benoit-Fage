@@ -36,8 +36,9 @@ import AboutLarge from '../components/Large/AboutLarge.vue';
 import ContactLarge from '../components/Large/ContactLarge.vue';
 
 import HomeSmall from '../components/Small/HomeSmall.vue';
-import AboutSmall from '../components/Small/WorkSmall.vue';
+import WorkSmall from '../components/Small/WorkSmall.vue';
 import ContactSmall from '../components/Small/ContactSmall.vue';
+import ProjectSmall from '../components/Small/ProjectSmall.vue';
 
 // Routes pour grands écrans
 const largeRoutes = [
@@ -49,8 +50,9 @@ const largeRoutes = [
 // Routes pour petits écrans
 const smallRoutes = [
   { path: '/', name: 'HomeSmall', component: HomeSmall },
-  { path: '/about', name: 'AboutSmall', component: AboutSmall },
-  { path: '/contact', name: 'ContactSmall', component: ContactSmall }
+  { path: '/work', name: 'WorkSmall', component: WorkSmall },
+  { path: '/contact', name: 'ContactSmall', component: ContactSmall },
+  { path: '/project/:id', name: 'ProjectSmall', component: ProjectSmall, props: true }
 ];
 
 const router = createRouter({
@@ -64,15 +66,9 @@ export const setupRouter = (isLargeScreen) => {
 
   // Ajouter les routes appropriées en fonction de la taille de l'écran
   if (isLargeScreen) {
-    largeRoutes.forEach(route => {
-      router.addRoute(route);
-      //console.log(`Added route for large screen: ${route.path}`);
-    });
+    largeRoutes.forEach(route => router.addRoute(route));
   } else {
-    smallRoutes.forEach(route => {
-      router.addRoute(route);
-      //console.log(`Added route for small screen: ${route.path}`);
-    });
+    smallRoutes.forEach(route => router.addRoute(route));
   }
 
   // Forcer une redirection vers '/' après l'ajout des routes
@@ -80,3 +76,4 @@ export const setupRouter = (isLargeScreen) => {
 };
 
 export default router;
+

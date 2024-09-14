@@ -18,13 +18,14 @@
     <img :src="images[selectedImageIndex]" alt="" class="image" />
   </div>
 
-  <div v-if="isFocused" class="close-button" @click="resetFocus" @touchstart="resetFocus">«¬</div>
+  <div v-if="isFocused" class="close-button" @click="resetFocus">«</div>
 </template>
 
 <script setup>
 import * as THREE from 'three';
 import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { useRouter } from 'vue-router';
 
 const sphereContainer = ref(null);
 const scene = shallowRef(null);
@@ -36,16 +37,17 @@ const points = []; // Pour stocker les points de la scène
 const isFocused = ref(false); // Indique si la caméra est focalisée sur un point
 const selectedImageIndex = ref(null); // Indice de l'image actuellement sélectionnée
 const selectedPoint = ref(null); // Point actuellement sélectionné
+const router = useRouter();
 
 // Liste des images associées aux titres
 const images = [
-  '/img/1.png',
-  '/img/2.jpg',
-  '/img/3.jpeg',
-  '/img/4.png',
-  '/img/5.png',
-  '/img/6.jpg',
-  '/img/7.png',
+  '/img/ImgPres/1.jpg',
+  '/img/ImgPres/2.jpg',
+  '/img/ImgPres/3.jpeg',
+  '/img/ImgPres/4.jpg',
+  '/img/ImgPres/5.jpg',
+  '/img/ImgPres/6.jpg',
+  '/img/ImgPres/7.jpeg',
 ];
 
 // Liste des positions des points
@@ -129,20 +131,20 @@ function onDocumentMouseClick(event) {
 
     // Change la couleur du point cliqué
     if (selectedPoint.value) {
-      selectedPoint.value.material.color.set(0xff0000); // Réinitialiser la couleur du point précédent
+      selectedPoint.value.material.color.set(0xafa0ca); // Réinitialiser la couleur du point précédent
     }
     selectedPoint.value = clickedPoint;
     clickedPoint.material.color.set(0xff0000); // Changer la couleur du point cliqué
 
-    // Rediriger vers une autre page ou effectuer une action
+    // Rediriger vers une autre page avec l'index du point
     const pointIndex = clickedPoint.userData.index;
-    redirectToPage(pointIndex);
+    navigateToProject(pointIndex);
   }
 }
 
-// Redirection vers une autre page
-function redirectToPage(index) {
-  const urls = [
+// Redirection vers une autre page avec un paramètre d'identifiant
+function navigateToProject(index) {
+  const paths = [
     '/self_molding',
     '/turing_glasses',
     '/ambient_exp',
@@ -152,8 +154,8 @@ function redirectToPage(index) {
     '/books_particles'
   ];
 
-  if (urls[index]) {
-    window.location.href = urls[index];
+  if (paths[index]) {
+    router.push({ name: 'ProjectSmall', params: { id: index } });
   }
 }
 
@@ -161,7 +163,7 @@ function redirectToPage(index) {
 function focusPoint(index) {
   // Réinitialiser la couleur du point précédemment sélectionné
   if (selectedPoint.value) {
-    selectedPoint.value.material.color.set(0xafa0ca); // Couleur rouge pour les points non sélectionnés
+    selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
   }
 
   const targetPoint = points[index];
@@ -170,7 +172,7 @@ function focusPoint(index) {
 
   // Changer la couleur du point sélectionné
   selectedPoint.value = targetPoint;
-  targetPoint.material.color.set(0xff0000); // Changer la couleur du point sélectionné en vert
+  targetPoint.material.color.set(0xff0000); // Changer la couleur du point sélectionné
 
   // Définir la nouvelle position de la caméra pour un déplacement fluide
   const newPos = targetPoint.position.clone().multiplyScalar(2); 
@@ -179,7 +181,7 @@ function focusPoint(index) {
 
 // Fonction de déplacement fluide de la caméra
 function moveCameraSmoothly(from, to) {
-  const duration = 1000; // Durée de l'animation en ms
+  const duration = 5000; // Durée de l'animation en ms
   const startTime = performance.now();
 
   function update() {
@@ -206,7 +208,7 @@ function resetFocus() {
 
   // Réinitialiser la couleur du point sélectionné
   if (selectedPoint.value) {
-    selectedPoint.value.material.color.set(0xff0000); // Couleur rouge pour les points non sélectionnés
+    selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
   }
 
   moveCameraSmoothly(camera.value.position, initialCameraPosition); // Déplacement fluide vers la position initiale
