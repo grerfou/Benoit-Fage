@@ -33,7 +33,7 @@
             { "type": "image", "src": "/img/Turing_glasses/6.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
             { "type": "image", "src": "/img/ImgPres/2.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" }
         ], 
-        "text": "Ce projet explore les formes modernes dans la sculpture contemporaine."
+        "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
     },
     { 
         "id": "2", 
@@ -50,7 +50,7 @@
             { "type": "image", "src": "/img/Ambient_exp/formouv.jpg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
             { "type": "image", "src": "/img/Ambient_exp/2.jpg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" }
         ], 
-        "text": "Ce projet utilise la réalité virtuelle pour créer des expériences artistiques immersives."
+        "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
     },
     { 
         "id": "3", 
@@ -69,7 +69,7 @@
             { "type": "image", "src": "/img/Ant/6.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
             { "type": "image", "src": "/img/Ant/7.jpg", "id": "image8", "date": "20/09/2022", "description": "Second image of Interactive Installation" }
         ], 
-        "text": "L'installation invite les spectateurs à interagir avec l'œuvre d'art pour créer des expériences uniques."
+        "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
     },
     { 
         "id": "4", 
@@ -83,7 +83,7 @@
             { "type": "image", "src": "/img/Weather/1.jpg", "id": "image9", "date": "01/10/2022", "description": "3D printed artwork" },
             { "type": "image", "src": "/img/Weather/2.jpg", "id": "image10", "date": "03/10/2022", "description": "Second image of 3D Printing Art" }
         ], 
-        "text": "L'impression 3D permet de créer des formes complexes impossibles à réaliser manuellement."
+        "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
     },
     { 
         "id": "5", 
@@ -100,7 +100,7 @@
             { "type": "image", "src": "/img/Room/4.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" },
             { "type": "image", "src": "/img/Room/5.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" }
         ], 
-        "text": "Ce projet explore le potentiel de la réalité augmentée dans les designs interactifs."
+        "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
     },
     { 
         "id": "6", 
@@ -126,6 +126,6 @@
             { "type": "image", "src": "/img/Books/13.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
             { "type": "image", "src": "/img/Books/14.jpg", "id": "image14", "date": "28/10/2022", "description": "Second image of AI-Generated Art" }
         ], 
-        "text": "Utilisation de l'IA pour générer des œuvres d'art uniques basées sur des algorithmes."
+        "text": "Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat."
     }
 ]

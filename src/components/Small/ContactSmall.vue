@@ -47,7 +47,7 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
     <div>
       <h2 class="Title">Who am I ?</h2>
       <p>
-        My name is Benoit, Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
+        My name is Benoit, i'm a young digital Designer/Artist,  Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
       </p>
     </div>
 
