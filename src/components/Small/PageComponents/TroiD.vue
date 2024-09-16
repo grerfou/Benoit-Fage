@@ -209,36 +209,6 @@ onBeforeUnmount(() => {
   }
 });
 
-
-
-/*
-
-
-camera.value.position.set(7, 4, 3);
-
-
-  // Ajouter des points au hasard
-  const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  const positions = [
-    new THREE.Vector3(1, 2, 1),
-    new THREE.Vector3(-1, -0, 1),
-    new THREE.Vector3(1, -0, -1),
-    new THREE.Vector3(-1, 2, -1),
-    new THREE.Vector3(2, 1, 0),
-    new THREE.Vector3(0, 3, 0),
-    new THREE.Vector3(0, 1, 2)
-  ];
-
-
-  targetPosition.set(7, -2, 3);
-
-
-
-*/
-
-
-
-
 </script>
 
 <style scoped>

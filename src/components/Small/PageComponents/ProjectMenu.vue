@@ -1,6 +1,6 @@
 <template>
   <!-- Menu de navigation -->
-  <ul class="menu">
+  <ul class="menu item5">
     <li @click="focusPoint(0)" @touchstart="focusPoint(0)">Self_molding</li>
     <li @click="focusPoint(1)" @touchstart="focusPoint(1)">Turing_Glasses</li>
     <li @click="focusPoint(2)" @touchstart="focusPoint(2)">Ambient_Exp</li>
@@ -9,10 +9,11 @@
     <li @click="focusPoint(5)" @touchstart="focusPoint(5)">Room_tour</li>
     <li @click="focusPoint(6)" @touchstart="focusPoint(6)">Book's_Particles</li>
   </ul>
-
+  
   <!-- Conteneur pour l'affichage des points 3D -->
-  <div ref="sphereContainer" class="sphere-container"></div>
-
+  <div ref="sphereContainer" class="sphere-container item6"></div>
+  
+  
   <!-- Conteneurs pour les images -->
   <div v-if="selectedImageIndex !== null" class="image-overlay">
     <img :src="images[selectedImageIndex]" alt="" class="image" />
@@ -63,6 +64,13 @@ const positions = [
 
 const initialCameraPosition = new THREE.Vector3(7, 4, 3); // Position initiale de la caméra
 
+const pointMaterial = new THREE.MeshBasicMaterial({ 
+  //color: 0xafa0ca, 
+  color: 0x00000, 
+  wireframe: true,
+  opacity: 0.95
+});
+
 function initThree() {
   scene.value = new THREE.Scene();
 
@@ -76,16 +84,23 @@ function initThree() {
   sphereContainer.value.appendChild(renderer.value.domElement);
 
   // Ajouter les points
-  const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xafa0ca });
+  //const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xafa0ca });
+  //const pointMaterial = new THREE.MeshBasicMaterial({ 
+    //color: 0xafa0ca, 
+    //wireframe: true,
+    //opacity: 0.95
+  //});
+
 
   positions.forEach((pos, index) => {
-    const pointGeometry = new THREE.SphereGeometry(0.1, 32, 32);
+    const pointGeometry = new THREE.SphereGeometry(0.1, 12, 12);
     const point = new THREE.Mesh(pointGeometry, pointMaterial.clone());
     point.position.copy(pos);
     point.userData = { index }; // Associer l'index au point pour une redirection facile
     scene.value.add(point);
     points.push(point);
   });
+
 
   // Lumière
   const light = new THREE.AmbientLight(0xffffff);
@@ -131,7 +146,9 @@ function onDocumentMouseClick(event) {
 
     // Change la couleur du point cliqué
     if (selectedPoint.value) {
-      selectedPoint.value.material.color.set(0xafa0ca); // Réinitialiser la couleur du point précédent
+      //selectedPoint.value.material.color.set(0xafa0ca); // Réinitialiser la couleur du point précédent
+      //selectedPoint.value.material.set(Poin); // Réinitialiser la couleur du point précédent
+      selectedPoint.value.material.copy(pointMaterial);
     }
     selectedPoint.value = clickedPoint;
     clickedPoint.material.color.set(0xff0000); // Changer la couleur du point cliqué
@@ -163,7 +180,8 @@ function navigateToProject(index) {
 function focusPoint(index) {
   // Réinitialiser la couleur du point précédemment sélectionné
   if (selectedPoint.value) {
-    selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
+    //selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
+    selectedPoint.value.material.copy(pointMaterial);
   }
 
   const targetPoint = points[index];
@@ -208,7 +226,8 @@ function resetFocus() {
 
   // Réinitialiser la couleur du point sélectionné
   if (selectedPoint.value) {
-    selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
+    //selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
+    selectedPoint.value.material.copy(pointMaterial);
   }
 
   moveCameraSmoothly(camera.value.position, initialCameraPosition); // Déplacement fluide vers la position initiale
@@ -230,6 +249,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+@import url(./../../../assets/SmallComponent.css);
+
 .menu {
   list-style: none;
   padding: 0;
@@ -248,14 +269,13 @@ onBeforeUnmount(() => {
 .sphere-container {
   width: 100%;
   height: 100vh;
-  position: relative;
   overflow: hidden;
 }
 
 .sphere-container canvas {
   width: 100%;
   height: 100%;
-  display: block;
+  border-bottom: 1px solid black;
 }
 
 .close-button {

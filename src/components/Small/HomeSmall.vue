@@ -8,9 +8,10 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
   <FullScreenMenu />
   <TroiD :modelDisplayTime="3000" />  
   <div class="parentElement">
-    <div class="size">
+    <div class="size item5">
       Creative Coder <br> &nbsp &nbsp &nbsp;  ~ Artist 
     </div>
+    <div class="item item6 croix"></div>
   </div>
 </template>
 

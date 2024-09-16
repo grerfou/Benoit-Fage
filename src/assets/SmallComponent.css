@@ -1,5 +1,4 @@
 
-
 .parentElement
 {
   display: flex;
@@ -9,7 +8,7 @@
   align-content: flex-end;
 
   height: 87vh;
-  border: 2px solid black;
+  border: 1px solid black;
   margin-top: 0.5vh;
   padding: 3vh;
   font-weight: 900;

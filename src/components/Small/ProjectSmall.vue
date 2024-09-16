@@ -100,10 +100,11 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   height: 87vh;
+  margin-top: 0.5vh;
   padding-left: 3vh;
   padding-right: 3vh;
   padding-bottom: 6vh;
-  border: 2px solid black;
+  border: 1px solid black;
   font-weight: 900;
   overflow: auto;
   text-justify: auto
