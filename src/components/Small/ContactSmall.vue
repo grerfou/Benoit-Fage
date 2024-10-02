@@ -44,9 +44,16 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 
     <div>
       <h3 class="Title">CreativeProcess, Etitcs works</h3>
-      <p>Lorem ipsum dolor sit amet, officia excepteur ex fugiat reprehenderit enim labore culpa sint ad nisi Lorem pariatur mollit ex esse exercitation amet. Nisi anim cupidatat excepteur officia. Reprehenderit nostrud nostrud ipsum Lorem est aliquip amet voluptate voluptate dolor minim nulla est proident. Nostrud officia pariatur ut officia. Sit irure elit esse ea nulla sunt ex occaecat reprehenderit commodo officia dolor Lorem duis laboris cupidatat officia voluptate. Culpa proident adipisicing id nulla nisi laboris ex in Lorem sunt duis officia eiusmod. Aliqua reprehenderit commodo ex non excepteur duis sunt velit enim. Voluptate laboris sint cupidatat ullamco ut ea consectetur et est culpa et culpa duis. <br> <br>
-        If you are interested, some manifesto I like : one, to, three, four 
-      </p>
+        <p class="fivet">
+
+          Hello and thank you for reading these few lines to get to know me a little better, “both in my work and in my artistic practice” I like to play with experimentation and iteration, I like to go back and forth, try, take back, add, remove, modify, change until I get a satisfactory result.
+I also have a strong ethical interest in all my work, especially environmental and human concerns. I'm passionate about experimental, light-hearted or more classic graphics, and thinking about how to interact with them to give them movement and life. 
+My main medium is FrontEnd and creative programming in general, but I'm capable of doing any kind of 3D, and thinking about different kinds of physical or digital interaction. 
+In short, I seem to have a rather versatile profile that doesn't close any door, always ready for new projects, passionate about programming and creativity, I'll always be able to meet a need.
+          <br>
+          <br>
+            If you are interested, some manifesto I like : <br><a href="https://archive.org/stream/The_Conscience_of_a_Hacker/hackersmanifesto.txt" target="_blank">The Conscience of a Hacker</a>,<br> <a href="https://kairos.technorhetoric.net/12.3/topoi/stolley/" target="_blank">The_Lofi_Declaration</a>,<br> <a href="https://archive.org/details/GuerillaOpenAccessManifesto" target="_blank">Guerilla Open Access Manifesto</a>
+        </p>
     </div>
 
     <div>
@@ -68,6 +75,11 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 .Title
 {
   font-family: TWKBurns-Light;
+}
+
+.fivet
+{
+  text-align: justify;
 }
 
 p

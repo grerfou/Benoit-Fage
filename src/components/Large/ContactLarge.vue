@@ -144,17 +144,9 @@ ul
   text-align: justify;
 }
 
-.One
-{
-}
-
 .Two
 {
   text-align: end;
-}
-
-.Three
-{
 }
 
 .Four
