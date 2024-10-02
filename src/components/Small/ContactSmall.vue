@@ -10,26 +10,31 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
   <div class="parentElement">
 
 
-    <div>
+    <div class="marg">
       <h3 class="Title">Typo</h3>
-      <p>TWKBurns-Regular</p>
-      <p>TWKBurns-Light</p>
-      <p>NeuePowerTrial-Regular</p>
-      <p>Terminal_Grotesque</p>
+        <a href="https://www.weltkern.com/shop/detail-typeface/burns"><p>TWKBurns</p></a>
+        <a href="https://power-type.com/neue-power/"><p>NeuePowerTrial</p></a>
+        <a href="https://velvetyne.fr/fonts/terminal-grotesque/"><p>Terminal_Grotesque</p></a>
+
     </div>
 
-    <div>
+    <div class="inf">
       <h3 class="Title">Information</h3> 
       <p>E-mail : benoit.fage@icloud.com</p>
+      <p>Phone : 06.18.96.98</p>
       <p>Location : FR</p>
     </div>
 
     <div>
       <h3 class="Title">Curriculum Vitae</h3>
-      <p>1</p>
-      <p>1</p>
-      <p>1</p>
-      <p>1</p>
+      <ul>
+        <li>
+          <p>DNSEP &nbsp; &nbsp; &nbsp; &nbsp; √  &nbsp; <span class="tt"> September 2023 to July 2025 </span>&nbsp; ¬ <a href="https://www.esadse.fr/en/home/">Saint-Etienne Higher School of Art and Design</a></p>
+          <p>ERASMUS &nbsp; √ &nbsp; <span class="tt"> May 2023 to August 2023 </span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ¬ <a href="https://hfg-karlsruhe.de/"> Hochschule für Gestaltung karlsruhe</a></p>
+          <p>DNA &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; √ &nbsp; <span class="tt">October 2020 to July 2023 </span>&nbsp; &nbsp; &nbsp; &nbsp;¬ <a href="https://www.esadse.fr/en/home/">Saint-Etienne Higher School of Art and Design </a></p>
+          <p>Prépa &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;√ &nbsp;<span class="tt">September 2019 to June 2020 </span>&nbsp;¬ Pass'art</p>
+        </li>
+      </ul>
     </div>
 
     <div>
@@ -47,20 +52,13 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
     <div>
       <h2 class="Title">Who am I ?</h2>
       <p>
-        My name is Benoit, i'm a young digital Designer/Artist,  Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.
+        My name is Benoit, i'm a young digital Designer/Artist,  Passionate about computers in many senses of the word, I have used them to create different types of graphics .
       </p>
     </div>
 
   </div>
 </template>
 
-
-
-<script>
-export default {
-  name: 'LargeComponent'
-};
-</script>
 
 
 
@@ -76,6 +74,25 @@ p
 {
   font-size: 0.9rem;
   font-family: TWKBurns-Regular;
+}
+
+a
+{
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: none;
+}
+
+.inf
+{
+  line-height: 0.5rem;
+}
+
+
+.marg
+{
+  margin: 0;
+  padding: 0;
+  line-height: 0.5rem; 
 }
 
 </style>

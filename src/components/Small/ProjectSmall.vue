@@ -64,18 +64,18 @@ onMounted(() => {
     <!-- Informations supplémentaires sur le projet -->
     <div class="parent" v-if="projectData">
       <div>
-        <h4>{ Tools }</h4>
+        <h4>Tools</h4>
         <p>{{ projectData.Tools || 'N/A' }}</p>
         
-        <h4>{ Type }</h4>
+        <h4>Type</h4>
         <p>{{ projectData.Type || 'N/A' }}</p>
       </div>
 
       <div>
-        <h4>{ Date }</h4>
+        <h4>Date</h4>
         <p>{{ projectData.Date || 'N/A' }}</p>
         
-        <h4>{ State }</h4>
+        <h4>State</h4>
         <p>{{ projectData.State || 'N/A' }}</p>
       </div>
     </div>
@@ -83,9 +83,19 @@ onMounted(() => {
     <!-- Affichage du texte de description du projet -->
     <p class="ExplainText" v-if="projectData">{{ projectData.text || 'No description available' }}</p>
     
-    <!-- Affichage des images supplémentaires du projet -->
-    <div class="ImgData" v-if="projectData" v-for="(item, index) in projectData.image" :key="index">
-      <img :src="item.src" :id="item.id" :data-date="item.date" :data-description="item.description" alt="Project Image" />
+
+
+    <div v-if="projectData">
+      <div class="ImgData" v-for="(item, index) in projectData.image" :key="index">
+        <!-- Si l'élément est une image -->
+        <img v-if="item.type === 'image'" :src="item.src" :id="item.id" :data-date="item.date" :data-description="item.description" alt="Project Image" />
+        
+        <!-- Si l'élément est une vidéo -->
+        <video id="video" v-else-if="item.type === 'video'" controls :id="item.id" :data-date="item.date" :data-description="item.description">
+          <source :src="item.src" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
     </div>
 
 
@@ -101,8 +111,13 @@ onMounted(() => {
   flex-direction: column;
   height: 87vh;
   margin-top: 0.5vh;
+
+  /*
   padding-left: 3vh;
   padding-right: 3vh;
+
+  */
+
   padding-bottom: 6vh;
   border: 1px solid black;
   font-weight: 900;
@@ -122,7 +137,8 @@ onMounted(() => {
 .parent
 {
   margin: 0;
-  padding: 0;
+  padding-left: 5%;
+  padding-right: 5%;
   display: grid;
 	grid-template-rows: repeat(2, 100%);
 	grid-template-columns: repeat(2, 1fr);
@@ -141,14 +157,16 @@ onMounted(() => {
 {
   margin-top: 5vh;
   margin-bottom: 20%;
-  padding-right: 50%;
   text-align: justify;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 h3
 {
   font-family: 'NeuePowerTrial-Regular';
   color: black;
+  padding-left: 5%;
 }
 
 h4

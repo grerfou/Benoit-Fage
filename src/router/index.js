@@ -1,39 +1,9 @@
-// // src/router/index.js
-// import { createRouter, createWebHistory } from 'vue-router';
-// import HomePage from '../components/HomePage.vue';
-// import AboutPage from '../components/AboutPage.vue';
-// import ContactPage from '../components/ContactPage.vue';
-
-// const routes = [
-//   {
-//     path: '/',
-//     name: 'Home',
-//     component: HomePage
-//   },
-//   {
-//     path: '/about',
-//     name: 'About',
-//     component: AboutPage
-//   },
-//   {
-//     path: '/contact',
-//     name: 'Contact',
-//     component: ContactPage
-//   }
-// ];
-
-// const router = createRouter({
-//   history: createWebHistory(),
-//   routes
-// });
-
-// export default router;
-
-
 import { createRouter, createWebHistory } from 'vue-router';
+
 import HomeLarge from '../components/Large/HomeLarge.vue';
-import AboutLarge from '../components/Large/AboutLarge.vue';
+import WorkLarge from '../components/Large/WorkLarge.vue';
 import ContactLarge from '../components/Large/ContactLarge.vue';
+import ProjectLarge from '../components/Large/ProjectLarge.vue';
 
 import HomeSmall from '../components/Small/HomeSmall.vue';
 import WorkSmall from '../components/Small/WorkSmall.vue';
@@ -43,8 +13,9 @@ import ProjectSmall from '../components/Small/ProjectSmall.vue';
 // Routes pour grands écrans
 const largeRoutes = [
   { path: '/', name: 'HomeLarge', component: HomeLarge },
-  { path: '/about', name: 'AboutLarge', component: AboutLarge },
-  { path: '/contact', name: 'ContactLarge', component: ContactLarge }
+  { path: '/work', name: 'WorkLarge', component: WorkLarge },
+  { path: '/contact', name: 'ContactLarge', component: ContactLarge },
+  { path: '/project/:id', name: 'ProjectLarge', component: ProjectLarge, props: true }
 ];
 
 // Routes pour petits écrans
