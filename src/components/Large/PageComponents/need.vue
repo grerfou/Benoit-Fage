@@ -22,6 +22,44 @@ te>
 </template>
 
 <script setup>
+
+
+/*
+
+
+Note :
+
+
+Function --> get2DPositionOfSphere()
+
+// Fonction pour obtenir la position 2D du centre d'une sphère
+function get2DPositionOfSphere(point, camera, renderer) {
+  const vector = point.position.clone();
+
+  vector.project(camera);
+
+  const widthHalf = renderer.domElement.clientWidth / 2;
+  const heightHalf = renderer.domElement.clientHeight / 2;
+
+  const x = (vector.x * widthHalf) + widthHalf;
+  const y = -(vector.y * heightHalf) + heightHalf;
+
+  return { x, y };
+}
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
 import * as THREE from 'three';
 import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';

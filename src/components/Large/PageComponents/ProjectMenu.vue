@@ -1,4 +1,5 @@
 <template>
+
   <!-- Menu de navigation -->
   <ul class="menu">
     <li @click="focusPoint(0)" @touchstart="focusPoint(0)">Self_molding</li>
@@ -42,7 +43,6 @@ const isFocused = ref(false);
 const selectedImageIndex = ref(null);
 const selectedPoint = ref(null);
 const router = useRouter();
-let textMesh; // Mesh pour le texte 3D
 
 const images = [
   '/img/ImgPres/1.jpg',
@@ -77,7 +77,7 @@ function initThree() {
   scene.value = new THREE.Scene();
   
   // Initialisation de la caméra
-  camera.value = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.value = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.value.position.copy(initialCameraPosition);
 
   // Configuration du renderer
@@ -111,41 +111,6 @@ function initThree() {
   animate();
 }
 
-function createText(text, position) {
-  const loader = new FontLoader();
-  loader.load('/font/Terminal Grotesque_Regular.json', (font) => {
-    const textGeometry = new TextGeometry(text, {
-      font: font,
-      size: 0.5, // Augmentation de la taille
-      height: 0.1,
-      curveSegments: 12,
-      bevelEnabled: false,
-    });
-
-    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Couleur rouge
-    textMesh = new THREE.Mesh(textGeometry, textMaterial);
-    textMesh.position.copy(position).add(new THREE.Vector3(0, 1, 0)); // Position légèrement au-dessus
-    scene.value.add(textMesh);
-
-    animateText(); // Appel à la fonction d'animation
-  });
-}
-
-function animateText() {
-  const targetPoint = selectedPoint.value.position;
-
-  const animate = () => {
-    if (textMesh) {
-      const angle = Date.now() * 0.001; // Calculer l'angle
-      textMesh.position.x = targetPoint.x + Math.cos(angle) * 1; // Rotation autour de l'axe X
-      textMesh.position.z = targetPoint.z + Math.sin(angle) * 1; // Rotation autour de l'axe Z
-      textMesh.lookAt(camera.value.position); // Orientation vers la caméra
-    }
-    requestAnimationFrame(animate); // Continuer l'animation
-  };
-
-  animate();
-}
 
 function animate() {
   requestAnimationFrame(animate);
@@ -162,6 +127,7 @@ function updateRendererSize() {
     camera.value.updateProjectionMatrix();
   }
 }
+
 
 function onWindowResize() {
   updateRendererSize();
@@ -186,7 +152,6 @@ function onDocumentMouseClick(event) {
     clickedPoint.material.color.set(0xff0000); // Changement de couleur pour le point sélectionné
 
     // Appel de createText pour créer le texte 3D
-    createText(`Point ${clickedPoint.userData.index}`, clickedPoint.position);
     const pointIndex = clickedPoint.userData.index;
     navigateToProject(pointIndex);
   }
@@ -208,9 +173,65 @@ function navigateToProject(index) {
   }
 }
 
+function removeCircle() {
+  const text = document.querySelector('.rotating-text');
+  if (text){
+    text.remove();
+  }
+}
+
+
+// Fonction pour ajouter un cercle en CSS à la position 2D calculée
+function showCircleAtPosition(position2D) {
+  // Si un cercle existe déjà, le supprimer
+  let conteneur = document.querySelector('.sphere-container');
+
+  // Créer un texte qui tourne autour du cercle
+  const text = document.createElement('div');
+  text.className = 'rotating-text';
+  text.innerText = "./CLICK ¬"; // Remplace par le texte souhaité
+
+  text.style.position = 'absolute';
+  text.style.padding = '7px';
+  text.style.marginTop = '-150px';
+  text.style.marginLeft = '-230px';
+  text.style.top = '50%';
+  text.style.left = '50%';
+  text.style.transformOrigin = 'center bottom';
+  text.style.whiteSpace = 'nowrap';
+  text.style.fontSize = '50px';
+  text.style.fontFamily = 'Terminal_Grotesque_open';
+  text.style.textAlign = 'center';
+
+  conteneur.appendChild(text);
+}
+
+
+function get2DPositionOfSphere(sphere, camera, renderer) {
+  // Cloner la position 3D de la sphère
+  const vector = sphere.position.clone();
+
+  // Projeter les coordonnées 3D en coordonnées écran (NDC)
+  vector.project(camera);
+
+  // Récupérer les dimensions du canvas
+  const canvasWidth = renderer.domElement.clientWidth;
+  const canvasHeight = renderer.domElement.clientHeight;
+
+  // Calculer les coordonnées en pixels (de -1 à 1 vers 0 à canvasWidth/Height)
+  const x = (vector.x * 0.5 + 0.5) * canvasWidth;
+  const y = (-(vector.y * 0.5) + 0.5) * canvasHeight; // Inverser l'axe Y pour correspondre aux coordonnées de l'écran
+
+  return { x, y };
+}
+
+const isAnimating = ref(false); // Ajout de cette variable
+
 function focusPoint(index) {
+  if (isAnimating.value) return; // Ignore la sélection si une animation est en cours
+
   if (selectedPoint.value) {
-    selectedPoint.value.material.copy(pointMaterial);
+    selectedPoint.value.material.copy(pointMaterial); // Réinitialiser la couleur du point précédent
   }
 
   const targetPoint = points[index];
@@ -218,62 +239,86 @@ function focusPoint(index) {
   selectedImageIndex.value = index;
 
   selectedPoint.value = targetPoint;
-  targetPoint.material.color.set(0xff0000);
+  targetPoint.material.color.set(0xff0000); // Changer la couleur pour indiquer la sélection
 
-  const newPos = targetPoint.position.clone().multiplyScalar(1.2);
-  moveCameraSmoothly(camera.value.position, newPos);
+  const pointPosition = targetPoint.position.clone(); // Position du point sélectionné
+  const distanceFromPoint = 0.5; // Distance fixe que tu veux entre le point et la caméra
+
+  // Calculer la direction de la caméra vers le point
+  const cameraDirection = camera.value.position.clone().sub(pointPosition).normalize(); // Direction de la caméra vers le point
+  const newCameraPosition = pointPosition.clone().add(cameraDirection.multiplyScalar(distanceFromPoint)); // Nouvelle position de la caméra
+
+  // Animer la caméra
+  isAnimating.value = true; // Démarrer l'animation
+  moveCameraSmoothly(camera.value.position.clone(), newCameraPosition, pointPosition, () => {
+    const sphereCenter2D = get2DPositionOfSphere(targetPoint, camera.value, renderer.value);
+    showCircleAtPosition(sphereCenter2D); // Afficher le cercle après l'animation
+    isAnimating.value = false; // Fin de l'animation
+  });
 }
 
-function moveCameraSmoothly(from, to) {
-  const duration = 6000;
+
+
+// Fonction pour déplacer la caméra en douceur
+function moveCameraSmoothly(startPosition, targetPosition, lookAtPosition, callback = null) {
+  const duration = 4000; // Durée de l'animation
   const startTime = performance.now();
 
-  function update() {
-    const currentTime = performance.now();
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
+  function animateCamera() {
+    const elapsed = performance.now() - startTime;
+    const t = Math.min(elapsed / duration, 1); // Normaliser le temps
 
-    camera.value.position.lerpVectors(from, to, progress);
-    camera.value.lookAt(0, 0, 0);
+    // Interpolation de la position de la caméra
+    const lerpedPosition = new THREE.Vector3().lerpVectors(startPosition, targetPosition, t);
+    camera.value.position.copy(lerpedPosition);
 
-    if (progress < 1) {
-      requestAnimationFrame(update);
-      }
+    // Interpoler la direction pour le lookAt
+    const currentLookAt = new THREE.Vector3(); // Position actuelle du lookAt
+    currentLookAt.copy(camera.value.position).add(camera.value.getWorldDirection(new THREE.Vector3())); // Direction actuelle
+    const lerpedLookAt = new THREE.Vector3().lerpVectors(currentLookAt, lookAtPosition, t); // Nouvelle direction
+
+    camera.value.lookAt(lerpedLookAt); // Mettre à jour le lookAt de la caméra
+
+    // Continuer l'animation
+    if (t < 1) {
+      requestAnimationFrame(animateCamera);
+      removeCircle();
+    } else if (callback) {
+      callback(); // Appeler le callback à la fin de l'animation
     }
-
-    update();
   }
 
-  function resetFocus() {
-    isFocused.value = false;
-    selectedImageIndex.value = null;
+  animateCamera(); // Démarrer l'animation
+}
 
-    if (selectedPoint.value) {
-      selectedPoint.value.material.copy(pointMaterial);
-    }
 
-    // Retirer le texte 3D si présent
-    if (textMesh) {
-      scene.value.remove(textMesh);
-      textMesh.geometry.dispose();
-      textMesh.material.dispose();
-      textMesh = null;
-    }
+function resetFocus() {
+  // Supprimer le cercle quand on réinitialise la vue
+  removeCircle();
 
-    moveCameraSmoothly(camera.value.position, initialCameraPosition);
+  isFocused.value = false;
+  selectedImageIndex.value = null;
+
+  if (selectedPoint.value) {
+    selectedPoint.value.material.copy(pointMaterial);
   }
 
-  onMounted(() => {
-    initThree(); // Appel à l'initialisation de la scène
-  });
+  // Déplacer la caméra vers la position initiale
+  moveCameraSmoothly(camera.value.position.clone(), initialCameraPosition, new THREE.Vector3(0, 0, 0)); // Regarde vers le centre
+}
 
-  onBeforeUnmount(() => {
-    window.removeEventListener('resize', onWindowResize);
-    renderer.value.domElement.removeEventListener('click', onDocumentMouseClick);
-    if (renderer.value) {
-      renderer.value.dispose();
-    }
-  });
+onMounted(() => {
+initThree(); // Appel à l'initialisation de la scène
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', onWindowResize);
+  renderer.value.domElement.removeEventListener('click', onDocumentMouseClick);
+  if (renderer.value) {
+    renderer.value.dispose();
+  }
+});
+
 </script>
 
 
@@ -282,6 +327,7 @@ function moveCameraSmoothly(from, to) {
 <style scoped>
 @import url(./../../../assets/LargeComponent.css);
 
+
 .menu {
   list-style: none;
   padding: 0;
@@ -289,7 +335,7 @@ function moveCameraSmoothly(from, to) {
   font-family: 'TWKBurns-Light';
   font-size: 3rem;
   width: 50%;
-  border-top: 1px solid black; 
+  border-top: 1px solid black;
 }
 
 .menu li {
@@ -298,6 +344,7 @@ function moveCameraSmoothly(from, to) {
 }
 
 .sphere-container {
+  position: relative; 
   width: 50%;
   height: 87vh; /* Utilisation de la pleine hauteur de la fenêtre */
   overflow: hidden;
@@ -306,6 +353,7 @@ function moveCameraSmoothly(from, to) {
 .sphere-container canvas {
   width: 100%;
   height: 100%;
+  display: block;
   border-bottom: 1px solid black;
   box-sizing: border-box; /* Prendre en compte la bordure */
 }

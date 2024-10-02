@@ -26,21 +26,22 @@
 import * as THREE from 'three';
 import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { useRouter } from 'vue-router';
 
 const sphereContainer = ref(null);
 const scene = shallowRef(null);
 const camera = shallowRef(null);
 const renderer = shallowRef(null);
-const raycaster = new THREE.Raycaster(); // Pour la détection de clic
-const mouse = new THREE.Vector2(); // Coordonnées de la souris
-const points = []; // Pour stocker les points de la scène
-const isFocused = ref(false); // Indique si la caméra est focalisée sur un point
-const selectedImageIndex = ref(null); // Indice de l'image actuellement sélectionnée
-const selectedPoint = ref(null); // Point actuellement sélectionné
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+const points = [];
+const isFocused = ref(false);
+const selectedImageIndex = ref(null);
+const selectedPoint = ref(null);
 const router = useRouter();
 
-// Liste des images associées aux titres
 const images = [
   '/img/ImgPres/1.jpg',
   '/img/ImgPres/2.jpg',
@@ -51,7 +52,6 @@ const images = [
   '/img/ImgPres/7.jpeg',
 ];
 
-// Liste des positions des points
 const positions = [
   new THREE.Vector3(1, 2, 1),
   new THREE.Vector3(-1, 0, 1),
@@ -62,104 +62,99 @@ const positions = [
   new THREE.Vector3(0, 1, 2)
 ];
 
-const initialCameraPosition = new THREE.Vector3(7, 4, 3); // Position initiale de la caméra
+const initialCameraPosition = new THREE.Vector3(3, 5, 3);
 
 const pointMaterial = new THREE.MeshBasicMaterial({ 
-  //color: 0xafa0ca, 
-  color: 0x00000, 
+  color: 0x000000, 
   wireframe: true,
-  opacity: 0.95
+  opacity: 0.5
 });
 
 function initThree() {
+  // Initialisation de la scène
   scene.value = new THREE.Scene();
-
+  
   // Initialisation de la caméra
-  camera.value = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.value = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.value.position.copy(initialCameraPosition);
 
   // Configuration du renderer
   renderer.value = new THREE.WebGLRenderer({ alpha: true });
-  renderer.value.setSize(window.innerWidth, window.innerHeight);
   sphereContainer.value.appendChild(renderer.value.domElement);
+  updateRendererSize();
 
-  // Ajouter les points
-  //const pointMaterial = new THREE.MeshBasicMaterial({ color: 0xafa0ca });
-  //const pointMaterial = new THREE.MeshBasicMaterial({ 
-    //color: 0xafa0ca, 
-    //wireframe: true,
-    //opacity: 0.95
-  //});
-
-
+  // Création des points
   positions.forEach((pos, index) => {
     const pointGeometry = new THREE.SphereGeometry(0.1, 12, 12);
     const point = new THREE.Mesh(pointGeometry, pointMaterial.clone());
     point.position.copy(pos);
-    point.userData = { index }; // Associer l'index au point pour une redirection facile
+    point.userData = { index };
     scene.value.add(point);
     points.push(point);
   });
 
-
-  // Lumière
+  // Ajout de la lumière
   const light = new THREE.AmbientLight(0xffffff);
   scene.value.add(light);
 
   // Contrôles de la caméra
   const controls = new OrbitControls(camera.value, renderer.value.domElement);
-  controls.enableDamping = true; // Assure un mouvement plus fluide
-  controls.dampingFactor = 0.25; // Réglage du lissage du mouvement
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.25;
 
+  // Écouteurs d'événements
   window.addEventListener('resize', onWindowResize);
-  renderer.value.domElement.addEventListener('click', onDocumentMouseClick); // Ajouter un écouteur de clic
+  renderer.value.domElement.addEventListener('click', onDocumentMouseClick);
 
   animate();
 }
 
-// Fonction d'animation
+
 function animate() {
   requestAnimationFrame(animate);
   renderer.value.render(scene.value, camera.value);
 }
 
-// Fonction pour redimensionner la fenêtre
-function onWindowResize() {
-  camera.value.aspect = window.innerWidth / window.innerHeight;
-  camera.value.updateProjectionMatrix();
-  renderer.value.setSize(window.innerWidth, window.innerHeight);
+function updateRendererSize() {
+  if (sphereContainer.value) {
+    const width = sphereContainer.value.clientWidth;
+    const height = sphereContainer.value.clientHeight;
+
+    renderer.value.setSize(width, height);
+    camera.value.aspect = width / height;
+    camera.value.updateProjectionMatrix();
+  }
 }
 
-// Fonction de gestion des clics de souris
+
+function onWindowResize() {
+  updateRendererSize();
+}
+
 function onDocumentMouseClick(event) {
-  // Calculer la position de la souris dans l'espace de la scène
   const rect = renderer.value.domElement.getBoundingClientRect();
   mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
   mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-  // Utiliser le raycaster pour détecter les objets cliqués
   raycaster.setFromCamera(mouse, camera.value);
   const intersects = raycaster.intersectObjects(points);
 
   if (intersects.length > 0) {
     const clickedPoint = intersects[0].object;
 
-    // Change la couleur du point cliqué
     if (selectedPoint.value) {
-      //selectedPoint.value.material.color.set(0xafa0ca); // Réinitialiser la couleur du point précédent
-      //selectedPoint.value.material.set(Poin); // Réinitialiser la couleur du point précédent
       selectedPoint.value.material.copy(pointMaterial);
     }
-    selectedPoint.value = clickedPoint;
-    clickedPoint.material.color.set(0xff0000); // Changer la couleur du point cliqué
 
-    // Rediriger vers une autre page avec l'index du point
+    selectedPoint.value = clickedPoint;
+    clickedPoint.material.color.set(0xff0000); // Changement de couleur pour le point sélectionné
+
+    // Appel de createText pour créer le texte 3D
     const pointIndex = clickedPoint.userData.index;
     navigateToProject(pointIndex);
   }
 }
 
-// Redirection vers une autre page avec un paramètre d'identifiant
 function navigateToProject(index) {
   const paths = [
     '/self_molding',
@@ -172,80 +167,158 @@ function navigateToProject(index) {
   ];
 
   if (paths[index]) {
-    router.push({ name: 'ProjectSmall', params: { id: index } });
+    router.push({ name: 'ProjectLarge', params: { id: index } });
   }
 }
 
-// Focus sur un point spécifique de la scène et changer sa couleur
+function removeCircle() {
+  const text = document.querySelector('.rotating-text');
+  if (text){
+    text.remove();
+  }
+}
+
+
+// Fonction pour ajouter un cercle en CSS à la position 2D calculée
+function showCircleAtPosition(position2D) {
+  // Si un cercle existe déjà, le supprimer
+  let conteneur = document.querySelector('.sphere-container');
+
+  // Créer un texte qui tourne autour du cercle
+  const text = document.createElement('div');
+  text.className = 'rotating-text';
+  text.innerText = "./CLICK ¬"; // Remplace par le texte souhaité
+
+  text.style.position = 'absolute';
+  text.style.padding = '7px';
+  text.style.marginTop = '-120px';
+  text.style.marginLeft = '-143px';
+  text.style.top = '50%';
+  text.style.left = '50%';
+  text.style.transformOrigin = 'center bottom';
+  text.style.fontSize = '30px';
+  text.style.fontFamily = 'Terminal_Grotesque_open';
+
+  conteneur.appendChild(text);
+}
+
+
+function get2DPositionOfSphere(sphere, camera, renderer) {
+  // Cloner la position 3D de la sphère
+  const vector = sphere.position.clone();
+
+  // Projeter les coordonnées 3D en coordonnées écran (NDC)
+  vector.project(camera);
+
+  // Récupérer les dimensions du canvas
+  const canvasWidth = renderer.domElement.clientWidth;
+  const canvasHeight = renderer.domElement.clientHeight;
+
+  // Calculer les coordonnées en pixels (de -1 à 1 vers 0 à canvasWidth/Height)
+  const x = (vector.x * 0.5 + 0.5) * canvasWidth;
+  const y = (-(vector.y * 0.5) + 0.5) * canvasHeight; // Inverser l'axe Y pour correspondre aux coordonnées de l'écran
+
+  return { x, y };
+}
+
+const isAnimating = ref(false); // Ajout de cette variable
+
+
 function focusPoint(index) {
-  // Réinitialiser la couleur du point précédemment sélectionné
+  if (isAnimating.value) return; // Ignore la sélection si une animation est en cours
+
   if (selectedPoint.value) {
-    //selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
-    selectedPoint.value.material.copy(pointMaterial);
+    selectedPoint.value.material.copy(pointMaterial); // Réinitialiser la couleur du point précédent
   }
 
   const targetPoint = points[index];
-  isFocused.value = true; // Marque la caméra comme étant focalisée sur un point
-  selectedImageIndex.value = index; // Affiche l'image associée
+  isFocused.value = true;
+  selectedImageIndex.value = index;
 
-  // Changer la couleur du point sélectionné
   selectedPoint.value = targetPoint;
-  targetPoint.material.color.set(0xff0000); // Changer la couleur du point sélectionné
+  targetPoint.material.color.set(0xff0000); // Changer la couleur pour indiquer la sélection
 
-  // Définir la nouvelle position de la caméra pour un déplacement fluide
-  const newPos = targetPoint.position.clone().multiplyScalar(2); 
-  moveCameraSmoothly(camera.value.position, newPos); 
+  const pointPosition = targetPoint.position.clone(); // Position du point sélectionné
+  const distanceFromPoint = 0.5; // Distance fixe que tu veux entre le point et la caméra
+
+  // Calculer la direction de la caméra vers le point
+  const cameraDirection = camera.value.position.clone().sub(pointPosition).normalize(); // Direction de la caméra vers le point
+  const newCameraPosition = pointPosition.clone().add(cameraDirection.multiplyScalar(distanceFromPoint)); // Nouvelle position de la caméra
+
+  // Animer la caméra
+  isAnimating.value = true; // Démarrer l'animation
+  moveCameraSmoothly(camera.value.position.clone(), newCameraPosition, pointPosition, () => {
+    const sphereCenter2D = get2DPositionOfSphere(targetPoint, camera.value, renderer.value);
+    showCircleAtPosition(sphereCenter2D); // Afficher le cercle après l'animation
+    isAnimating.value = false; // Fin de l'animation
+  });
 }
 
-// Fonction de déplacement fluide de la caméra
-function moveCameraSmoothly(from, to) {
-  const duration = 5000; // Durée de l'animation en ms
+
+
+// Fonction pour déplacer la caméra en douceur
+function moveCameraSmoothly(startPosition, targetPosition, lookAtPosition, callback = null) {
+  const duration = 4000; // Durée de l'animation
   const startTime = performance.now();
 
-  function update() {
-    const currentTime = performance.now();
-    const elapsed = currentTime - startTime;
-    const progress = Math.min(elapsed / duration, 1);
+  function animateCamera() {
+    const elapsed = performance.now() - startTime;
+    const t = Math.min(elapsed / duration, 1); // Normaliser le temps
 
-    // Interpolation linéaire pour déplacer la caméra
-    camera.value.position.lerpVectors(from, to, progress);
-    camera.value.lookAt(0, 0, 0);
+    // Interpolation de la position de la caméra
+    const lerpedPosition = new THREE.Vector3().lerpVectors(startPosition, targetPosition, t);
+    camera.value.position.copy(lerpedPosition);
 
-    if (progress < 1) {
-      requestAnimationFrame(update);
+    // Interpoler la direction pour le lookAt
+    const currentLookAt = new THREE.Vector3(); // Position actuelle du lookAt
+    currentLookAt.copy(camera.value.position).add(camera.value.getWorldDirection(new THREE.Vector3())); // Direction actuelle
+    const lerpedLookAt = new THREE.Vector3().lerpVectors(currentLookAt, lookAtPosition, t); // Nouvelle direction
+
+    camera.value.lookAt(lerpedLookAt); // Mettre à jour le lookAt de la caméra
+
+    // Continuer l'animation
+    if (t < 1) {
+      requestAnimationFrame(animateCamera);
+      removeCircle();
+    } else if (callback) {
+      callback(); // Appeler le callback à la fin de l'animation
     }
   }
 
-  update();
+  animateCamera(); // Démarrer l'animation
 }
 
-// Réinitialiser la caméra à sa position initiale
 function resetFocus() {
-  isFocused.value = false; // Marque la caméra comme étant en position initiale
-  selectedImageIndex.value = null; // Cache l'image
+  // Supprimer le cercle quand on réinitialise la vue
+  removeCircle();
 
-  // Réinitialiser la couleur du point sélectionné
+  isFocused.value = false;
+  selectedImageIndex.value = null;
+
   if (selectedPoint.value) {
-    //selectedPoint.value.material.color.set(0xafa0ca); // Couleur initiale pour les points non sélectionnés
     selectedPoint.value.material.copy(pointMaterial);
   }
 
-  moveCameraSmoothly(camera.value.position, initialCameraPosition); // Déplacement fluide vers la position initiale
+  // Déplacer la caméra vers la position initiale
+  moveCameraSmoothly(camera.value.position.clone(), initialCameraPosition, new THREE.Vector3(0, 0, 0)); // Regarde vers le centre
 }
 
-// Initialisation du composant
+
+
+
+
 onMounted(() => {
-  initThree();
+initThree(); // Appel à l'initialisation de la scène
 });
 
-// Nettoyage du composant
 onBeforeUnmount(() => {
   window.removeEventListener('resize', onWindowResize);
-  renderer.value.domElement.removeEventListener('click', onDocumentMouseClick); // Supprimer l'écouteur de clic
+  renderer.value.domElement.removeEventListener('click', onDocumentMouseClick);
   if (renderer.value) {
     renderer.value.dispose();
   }
 });
+
 </script>
 
 <style scoped>

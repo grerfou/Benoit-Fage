@@ -71,6 +71,12 @@ export default {
     src: url('/public/font/TWKBurns-Regular.woff2');
 }
 
+@font-face {
+    font-family: 'Terminal_Grotesque_open';
+    src: url('/public/font/terminal-grotesque_open.otf');
+}
+
+
 a
 {
   text-decoration: none;
