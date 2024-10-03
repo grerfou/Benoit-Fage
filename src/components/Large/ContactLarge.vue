@@ -20,7 +20,7 @@ import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
       <div class="Two">
         <h3 class="Title">Information</h3> 
         <p>E-mail : benoit.fage@icloud.com</p>
-        <p>Phone : 06.18.96.31.78</p>
+        <p>Phone : +33 6.18.96.31.98</p>
         <p>Location : FR</p>
       </div>
     </div>

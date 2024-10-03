@@ -164,7 +164,7 @@ function navigateToProject(index) {
   ];
 
   if (paths[index]) {
-    router.push({ path: paths[index] }); // Navigation directe sans le nom 'ProjectSmall'
+    router.push({ name: 'ProjectSmall', params: { id: index } });
   }
 }
 
