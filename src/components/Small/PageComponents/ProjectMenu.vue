@@ -26,8 +26,6 @@
 import * as THREE from 'three';
 import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { useRouter } from 'vue-router';
 
 const sphereContainer = ref(null);
@@ -149,7 +147,6 @@ function onDocumentMouseClick(event) {
     selectedPoint.value = clickedPoint;
     clickedPoint.material.color.set(0xff0000); // Changement de couleur pour le point sélectionné
 
-    // Appel de createText pour créer le texte 3D
     const pointIndex = clickedPoint.userData.index;
     navigateToProject(pointIndex);
   }
@@ -167,7 +164,7 @@ function navigateToProject(index) {
   ];
 
   if (paths[index]) {
-    router.push({ name: 'ProjectLarge', params: { id: index } });
+    router.push({ path: paths[index] }); // Navigation directe sans le nom 'ProjectSmall'
   }
 }
 

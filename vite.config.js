@@ -27,6 +27,6 @@ export default defineConfig({
   plugins: [vue()],
   assetsInclude: ['**/*.glb', '**/*.png'],
   build: {
-    sourcemap: true // Assurez-vous que les cartes sources sont activées
+    sourcemap: true, // Assurez-vous que les cartes sources sont activées
   }
 });

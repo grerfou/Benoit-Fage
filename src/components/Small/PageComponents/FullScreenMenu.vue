@@ -16,7 +16,7 @@
       <div class="menu-content">
         <!-- Contenu du menu -->
         <ul>
-          <li><router-link to="/" @click.native="toggleMenu">Home</router-link></li>
+          <li><router-link to="/home" @click.native="toggleMenu">Home</router-link></li>
           <li><router-link to="/work" @click.native="toggleMenu">Work</router-link></li>
           <li><router-link to="/contact" @click.native="toggleMenu">About</router-link></li>
         </ul>
