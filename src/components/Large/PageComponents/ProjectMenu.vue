@@ -10,10 +10,10 @@
     <li @click="focusPoint(5)" @touchstart="focusPoint(5)">Room_tour</li>
     <li @click="focusPoint(6)" @touchstart="focusPoint(6)">Book's_Particles</li>
   </ul>
-  
+
   <!-- Conteneur pour l'affichage des points 3D -->
   <div ref="sphereContainer" class="sphere-container item6"></div>
-  
+
   <!-- Conteneurs pour les images -->
   <div v-if="selectedImageIndex !== null" class="image-overlay">
     <img :src="images[selectedImageIndex]" alt="" class="image" />
@@ -64,8 +64,8 @@ const positions = [
 
 const initialCameraPosition = new THREE.Vector3(3, 5, 3);
 
-const pointMaterial = new THREE.MeshBasicMaterial({ 
-  color: 0x000000, 
+const pointMaterial = new THREE.MeshBasicMaterial({
+  color: 0x000000,
   wireframe: true,
   opacity: 0.5
 });
@@ -73,7 +73,7 @@ const pointMaterial = new THREE.MeshBasicMaterial({
 function initThree() {
   // Initialisation de la scène
   scene.value = new THREE.Scene();
-  
+
   // Initialisation de la caméra
   camera.value = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.value.position.copy(initialCameraPosition);
@@ -173,26 +173,26 @@ function navigateToProject(index) {
 
 function removeCircle() {
   const text = document.querySelector('.rotating-text');
-  if (text){
+  if (text) {
     text.remove();
   }
 }
 
 
 // Fonction pour ajouter un cercle en CSS à la position 2D calculée
-function showCircleAtPosition(position2D) {
+function showCircleAtPosition() {
   // Si un cercle existe déjà, le supprimer
   let conteneur = document.querySelector('.sphere-container');
 
   // Créer un texte qui tourne autour du cercle
   const text = document.createElement('div');
   text.className = 'rotating-text';
-  text.innerText = "./CLICK ¬"; // Remplace par le texte souhaité
+  text.innerText = "CLICK ¬"; // Remplace par le texte souhaité
 
   text.style.position = 'absolute';
   text.style.padding = '7px';
   text.style.marginTop = '-150px';
-  text.style.marginLeft = '-230px';
+  text.style.marginLeft = '-200px';
   text.style.top = '50%';
   text.style.left = '50%';
   text.style.transformOrigin = 'center bottom';
@@ -259,7 +259,7 @@ function focusPoint(index) {
 
 // Fonction pour déplacer la caméra en douceur
 function moveCameraSmoothly(startPosition, targetPosition, lookAtPosition, callback = null) {
-  const duration = 4000; // Durée de l'animation
+  const duration = 2000;// Durée de l'animation
   const startTime = performance.now();
 
   function animateCamera() {
@@ -306,7 +306,7 @@ function resetFocus() {
 }
 
 onMounted(() => {
-initThree(); // Appel à l'initialisation de la scène
+  initThree(); // Appel à l'initialisation de la scène
 });
 
 onBeforeUnmount(() => {
@@ -342,9 +342,10 @@ onBeforeUnmount(() => {
 }
 
 .sphere-container {
-  position: relative; 
+  position: relative;
   width: 50%;
-  height: 87vh; /* Utilisation de la pleine hauteur de la fenêtre */
+  height: 87vh;
+  /* Utilisation de la pleine hauteur de la fenêtre */
   overflow: hidden;
 }
 
@@ -353,7 +354,8 @@ onBeforeUnmount(() => {
   height: 100%;
   display: block;
   border-bottom: 1px solid black;
-  box-sizing: border-box; /* Prendre en compte la bordure */
+  box-sizing: border-box;
+  /* Prendre en compte la bordure */
 }
 
 .close-button {
@@ -382,4 +384,3 @@ onBeforeUnmount(() => {
   height: auto;
 }
 </style>
-
