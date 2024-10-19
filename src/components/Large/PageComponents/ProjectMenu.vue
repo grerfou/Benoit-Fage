@@ -200,7 +200,6 @@ function showCircleAtPosition() {
   text.style.fontSize = '50px';
   text.style.fontFamily = 'Terminal_Grotesque_open';
   text.style.textAlign = 'center';
-
   conteneur.appendChild(text);
 }
 
