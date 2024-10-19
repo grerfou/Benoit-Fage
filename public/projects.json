@@ -1,144 +1,471 @@
 [
-    { 
-        "id": "0", 
-        "imageProject": "/img/ImgPres/1.jpg", 
-        "titre": "Self_molding",
-
-        "Tools": "[ Rhino ]",
-        "Type": "[ Experimental ]",
-        "State": "[ Process ]",
-        "Date": "[ 2020 ]",
-
-        "image": [
-        { "type": "video", "src": "/img/Self_molding/para.mp4", "id": "image1", "date": "01/07/2022", "description": "First image" },
-        { "type": "image", "src": "/img/Self_molding/mold-one.jpg", "id": "image1", "date": "01/07/2022", "description": "First image" },
-        { "type": "image", "src": "/img/Self_molding/mold-to.jpg", "id": "image1", "date": "01/07/2022", "description": "First image" },
-        { "type": "image", "src": "/img/Self_molding/mold-tree.jpg", "id": "image1", "date": "01/07/2022", "description": "First image" }
-        ], 
-        "text": "This project consists of rethinking and questioning manufacturing processes in more natural ways with less human intervention. As I'm very intrigued by the growth of natural elements, I've decided to use this natural process to produce parts. In a nutshell, I want to grow parts on trees. " 
-    },
-    { 
-        "id": "1", 
-        "imageProject": "/img/ImgPres/2.jpg", 
-        "titre": "Turing_glasses",
-        "Tools": "[ Blender, Python ]",
-        "Type": "[ Experimental ]",
-        "State": "[ Done ]",
-        "Date": "[ 2020 ]",
-        "image": [
-            { "type": "image", "src": "/img/Turing_glasses/1.jpg", "id": "image1", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "image", "src": "/img/Turing_glasses/2.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "image", "src": "/img/Turing_glasses/3.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "video", "src": "/img/Turing_glasses/apla.mp4", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "image", "src": "/img/Turing_glasses/4.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "image", "src": "/img/Turing_glasses/5.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "image", "src": "/img/Turing_glasses/6.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" },
-            { "type": "image", "src": "/img/ImgPres/2.jpg", "id": "image2", "date": "10/08/2022", "description": "First image of Artistic Sculpture" }
-        ], 
-        "text": "Alan Turing is best known as the mathematician who laid the foundations of what we now call a computer, thanks to the Turing machine he created to decipher enigma. But he also laid the foundations of what is today Morphogenesis, without which this field would probably not exist.From this, I decided to create a pair of glasses in homage to Alan Turing, using morphogenesis principles (strange attractors, reaction-diffusion). I found it interesting to develop an object that pays homage to him by highlighting an important current practice that doesn't exist thanks to him and isn't directly linked to his name, unlike digital technology.Process: Strange attractor programming(2d, 3D) > 3D interpretation > Shape drawing > Shape assembly > Modeling > Application of reaction-diffusion as texture."
-    },
-    { 
-        "id": "2", 
-        "imageProject": "/img/ImgPres/3.jpeg", 
-        "titre": "Ambient_exp",
-        "Tools": "[ Draw, Mock-up ]",
-        "Type": "[ Research ]",
-        "State": "[ Done ]",
-        "Date": "[ 2020 ]",
-        "image": [
-            { "type": "image", "src": "/img/Ambient_exp/1.jpeg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
-            { "type": "image", "src": "/img/Ambient_exp/form.jpg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
-            { "type": "image", "src": "/img/Ambient_exp/formferm.jpg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
-            { "type": "image", "src": "/img/Ambient_exp/formouv.jpg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
-            { "type": "video", "src": "/img/Ambient_exp/B.mp4", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
-            { "type": "image", "src": "/img/Ambient_exp/2.jpg", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" },
-            { "type": "video", "src": "/img/Ambient_exp/A.mp4", "id": "image5", "date": "05/09/2022", "description": "Virtual Reality immersive artwork" }
-        ], 
-        "text": "Ambient-Exp stems from an experiment I began in my first year. Where I discovered the work of the Self-Assembly lab and Skylar Tibbits and their Transformable Meeting Spaces project. The idea was to experiment with “woven” physical modular systems, and the first part of the experiment began by drilling holes in various shapes traced out beforehand on a board where I placed pvc tubes and then “wove” them."
-    },
-    { 
-        "id": "3", 
-        "imageProject": "/img/ImgPres/4.jpg", 
-        "titre": "Ant_FootPrint",
-        "Tools": "[ processing, java ]",
-        "Type": "[ Experimental ]",
-        "State": "[ Done ]",
-        "Date": "[ 2020 ]",
-        "image": [
-            { "type": "image", "src": "/img/Ant/1.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "video", "src": "/img/Ant/b.mp4", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "video", "src": "/img/Ant/a.mp4", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "image", "src": "/img/Ant/2.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "image", "src": "/img/Ant/3.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "image", "src": "/img/Ant/4.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "image", "src": "/img/Ant/5.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "image", "src": "/img/Ant/6.jpg", "id": "image7", "date": "18/09/2022", "description": "First image of Interactive Installation" },
-            { "type": "image", "src": "/img/Ant/7.jpg", "id": "image8", "date": "20/09/2022", "description": "Second image of Interactive Installation" }
-        ], 
-        "text": "Ant_footprint aims to simulate organisms governed by rules called algorithms. by experimenting with them in an application, these become tangible through a small robotic installation. Each experiment defines a new algorithm, which is executed graphically on the screen and then via the robotic installation. Algorithms are materialized in two ways Through a graphic result and by the movement produced by the installation. "
-    },
-    { 
-        "id": "4", 
-        "imageProject": "/img/ImgPres/5.jpg", 
-        "titre": "Weather_Organism",
-        "Tools": "[ processing, java ]",
-        "Type": "[ Digital Design ]",
-        "State": "[ Done ]",
-        "Date": "[ 2020 ]",
-        "image": [
-            { "type": "video", "src": "/img/Weather/a.mp4", "id": "image9", "date": "01/10/2022", "description": "3D printed artwork" },
-            { "type": "video", "src": "/img/Weather/1.mp4", "id": "image9", "date": "01/10/2022", "description": "3D printed artwork" },
-            { "type": "video", "src": "/img/Weather/2.mp4", "id": "image9", "date": "01/10/2022", "description": "3D printed artwork" },
-            { "type": "image", "src": "/img/Weather/1.jpg", "id": "image9", "date": "01/10/2022", "description": "3D printed artwork" },
-            { "type": "image", "src": "/img/Weather/2.jpg", "id": "image10", "date": "03/10/2022", "description": "Second image of 3D Printing Art" }
-        ], 
-        "text": "The idea of this project is to retranscribe metric systems by organism movements, so that we can have an approach to reading weather data that is closer to the way we could look at animals to interpret meteorological events. So I developed different motions that would be more or less “amplified” when a metoelement changes (temperature, pressure, etc.)."
-    },
-    { 
-        "id": "5", 
-        "imageProject": "/img/ImgPres/6.jpg", 
-        "titre": "Room_Tour",
-        "Tools": "[ web ]",
-        "Type": "[ Scenography ]",
-        "State": "[ Done ]",
-        "Date": "[ 2020 ]",
-        "image": [
-            { "type": "image", "src": "/img/Room/1.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" },
-            { "type": "image", "src": "/img/Room/2.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" },
-            { "type": "video", "src": "/img/Room/1.mp4", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" },
-            { "type": "image", "src": "/img/Room/3.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" },
-            { "type": "image", "src": "/img/Room/4.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" },
-            { "type": "image", "src": "/img/Room/5.jpg", "id": "image11", "date": "15/10/2022", "description": "Augmented Reality interactive design" }
-        ], 
-        "text": "Design of a 3D scenographic website for the the international digital design biennial “The Wrong biennial”."
-    },
-    { 
-        "id": "6", 
-        "imageProject": "/img/ImgPres/7.jpeg", 
-        "titre": "Books_Particles",
-        "Tools": "[ Houdini, Blender ]",
-        "Type": "[ Graphism ]",
-        "State": "[ Done ]",
-        "Date": "[ 2020 ]",
-        "image": [
-            { "type": "video", "src": "/img/Books/1.mp4", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/1.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/2.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/3.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "video", "src": "/img/Books/exp1.mp4", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "video", "src": "/img/Books/compose.mp4", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/4.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/5.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/6.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/7.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/8.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/9.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/10.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/11.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/12.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/13.jpg", "id": "image13", "date": "25/10/2022", "description": "AI-generated artwork" },
-            { "type": "image", "src": "/img/Books/14.jpg", "id": "image14", "date": "28/10/2022", "description": "Second image of AI-Generated Art" }
-        ], 
-        "text": "This is a project of graphic and digital experimentation where the idea is to use typographic vignettes, once widely used once widely used, but now very much absent from books. Once common to books, they've disappeared from our daily lives. The idea is to create graphic forms based on these same vignettes, using 3d and particle simulation to give them a new life, whether physical or digital."
-    }
+  {
+    "id": "0",
+    "imageProject": "/img/ImgPres/1.jpg",
+    "titre": "Self_molding",
+    "Tools": "[ Rhino ]",
+    "Type": "[ Experimental ]",
+    "State": "[ Process ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "video",
+        "src": "/img/Self_molding/para.mp4",
+        "id": "image1",
+        "date": "01/07/2022",
+        "description": "First image"
+      },
+      {
+        "type": "image",
+        "src": "/img/Self_molding/mold-one.jpg",
+        "id": "image1",
+        "date": "01/07/2022",
+        "description": "First image"
+      },
+      {
+        "type": "image",
+        "src": "/img/Self_molding/mold-to.jpg",
+        "id": "image1",
+        "date": "01/07/2022",
+        "description": "First image"
+      },
+      {
+        "type": "image",
+        "src": "/img/Self_molding/mold-tree.jpg",
+        "id": "image1",
+        "date": "01/07/2022",
+        "description": "First image"
+      }
+    ],
+    "text": "This project consists of rethinking and questioning manufacturing processes in more natural ways with less human intervention. As I'm very intrigued by the growth of natural elements, I've decided to use this natural process to produce parts. In a nutshell, I want to grow parts on trees. "
+  },
+  {
+    "id": "1",
+    "imageProject": "/img/ImgPres/2.jpg",
+    "titre": "Turing_glasses",
+    "Tools": "[ Blender, Python ]",
+    "Type": "[ Experimental ]",
+    "State": "[ Done ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "image",
+        "src": "/img/Turing_glasses/1.jpg",
+        "id": "image1",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "image",
+        "src": "/img/Turing_glasses/2.jpg",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "image",
+        "src": "/img/Turing_glasses/3.jpg",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "video",
+        "src": "/img/Turing_glasses/apla.mp4",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "image",
+        "src": "/img/Turing_glasses/4.jpg",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "image",
+        "src": "/img/Turing_glasses/5.jpg",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "image",
+        "src": "/img/Turing_glasses/6.jpg",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      },
+      {
+        "type": "image",
+        "src": "/img/ImgPres/2.jpg",
+        "id": "image2",
+        "date": "10/08/2022",
+        "description": "First image of Artistic Sculpture"
+      }
+    ],
+    "text": "Alan Turing is best known as the mathematician who laid the foundations of what we now call a computer, thanks to the Turing machine he created to decipher enigma. But he also laid the foundations of what is today Morphogenesis, without which this field would probably not exist.From this, I decided to create a pair of glasses in homage to Alan Turing, using morphogenesis principles (strange attractors, reaction-diffusion). I found it interesting to develop an object that pays homage to him by highlighting an important current practice that doesn't exist thanks to him and isn't directly linked to his name, unlike digital technology.Process: Strange attractor programming(2d, 3D) > 3D interpretation > Shape drawing > Shape assembly > Modeling > Application of reaction-diffusion as texture."
+  },
+  {
+    "id": "2",
+    "imageProject": "/img/ImgPres/3.jpeg",
+    "titre": "Ambient_exp",
+    "Tools": "[ Draw, Mock-up ]",
+    "Type": "[ Research ]",
+    "State": "[ Done ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "image",
+        "src": "/img/Ambient_exp/1.jpeg",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ambient_exp/form.jpg",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ambient_exp/formferm.jpg",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ambient_exp/formouv.jpg",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      },
+      {
+        "type": "video",
+        "src": "/img/Ambient_exp/B.mp4",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ambient_exp/2.jpg",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      },
+      {
+        "type": "video",
+        "src": "/img/Ambient_exp/A.mp4",
+        "id": "image5",
+        "date": "05/09/2022",
+        "description": "Virtual Reality immersive artwork"
+      }
+    ],
+    "text": "Ambient-Exp stems from an experiment I began in my first year. Where I discovered the work of the Self-Assembly lab and Skylar Tibbits and their Transformable Meeting Spaces project. The idea was to experiment with “woven” physical modular systems, and the first part of the experiment began by drilling holes in various shapes traced out beforehand on a board where I placed pvc tubes and then “wove” them."
+  },
+  {
+    "id": "3",
+    "imageProject": "/img/ImgPres/4.jpg",
+    "titre": "Ant_FootPrint",
+    "Tools": "[ processing, java ]",
+    "Type": "[ Experimental ]",
+    "State": "[ Done ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "image",
+        "src": "/img/Ant/1.jpg",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "video",
+        "src": "/img/Ant/b.mp4",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "video",
+        "src": "/img/Ant/a.mp4",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ant/2.jpg",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ant/3.jpg",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ant/4.jpg",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ant/5.jpg",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ant/6.jpg",
+        "id": "image7",
+        "date": "18/09/2022",
+        "description": "First image of Interactive Installation"
+      },
+      {
+        "type": "image",
+        "src": "/img/Ant/7.jpg",
+        "id": "image8",
+        "date": "20/09/2022",
+        "description": "Second image of Interactive Installation"
+      }
+    ],
+    "text": "Ant_footprint aims to simulate organisms governed by rules called algorithms. by experimenting with them in an application, these become tangible through a small robotic installation. Each experiment defines a new algorithm, which is executed graphically on the screen and then via the robotic installation. Algorithms are materialized in two ways Through a graphic result and by the movement produced by the installation. "
+  },
+  {
+    "id": "4",
+    "imageProject": "/img/ImgPres/5.jpg",
+    "titre": "Weather_Organism",
+    "Tools": "[ processing, java ]",
+    "Type": "[ Digital Design ]",
+    "State": "[ Done ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "video",
+        "src": "/img/Weather/1.mp4",
+        "id": "image9",
+        "date": "01/10/2022",
+        "description": "3D printed artwork"
+      },
+      {
+        "type": "video",
+        "src": "/img/Weather/2.mp4",
+        "id": "image9",
+        "date": "01/10/2022",
+        "description": "3D printed artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Weather/1.jpg",
+        "id": "image9",
+        "date": "01/10/2022",
+        "description": "3D printed artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Weather/2.jpg",
+        "id": "image10",
+        "date": "03/10/2022",
+        "description": "Second image of 3D Printing Art"
+      }
+    ],
+    "text": "The idea of this project is to retranscribe metric systems by organism movements, so that we can have an approach to reading weather data that is closer to the way we could look at animals to interpret meteorological events. So I developed different motions that would be more or less “amplified” when a metoelement changes (temperature, pressure, etc.)."
+  },
+  {
+    "id": "5",
+    "imageProject": "/img/ImgPres/6.jpg",
+    "titre": "Room_Tour",
+    "Tools": "[ web ]",
+    "Type": "[ Scenography ]",
+    "State": "[ Done ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "image",
+        "src": "/img/Room/1.jpg",
+        "id": "image11",
+        "date": "15/10/2022",
+        "description": "Augmented Reality interactive design"
+      },
+      {
+        "type": "image",
+        "src": "/img/Room/2.jpg",
+        "id": "image11",
+        "date": "15/10/2022",
+        "description": "Augmented Reality interactive design"
+      },
+      {
+        "type": "video",
+        "src": "/img/Room/1.mp4",
+        "id": "image11",
+        "date": "15/10/2022",
+        "description": "Augmented Reality interactive design"
+      },
+      {
+        "type": "image",
+        "src": "/img/Room/3.jpg",
+        "id": "image11",
+        "date": "15/10/2022",
+        "description": "Augmented Reality interactive design"
+      },
+      {
+        "type": "image",
+        "src": "/img/Room/4.jpg",
+        "id": "image11",
+        "date": "15/10/2022",
+        "description": "Augmented Reality interactive design"
+      },
+      {
+        "type": "image",
+        "src": "/img/Room/5.jpg",
+        "id": "image11",
+        "date": "15/10/2022",
+        "description": "Augmented Reality interactive design"
+      }
+    ],
+    "text": "Design of a 3D scenographic website for the the international digital design biennial “The Wrong biennial”."
+  },
+  {
+    "id": "6",
+    "imageProject": "/img/ImgPres/7.jpeg",
+    "titre": "Books_Particles",
+    "Tools": "[ Houdini, Blender ]",
+    "Type": "[ Graphism ]",
+    "State": "[ Done ]",
+    "Date": "[ 2020 ]",
+    "image": [
+      {
+        "type": "video",
+        "src": "/img/Books/1.mp4",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/1.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/2.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/3.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "video",
+        "src": "/img/Books/exp1.mp4",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "video",
+        "src": "/img/Books/compose.mp4",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/4.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/5.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/6.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/7.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/8.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/9.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/10.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/11.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/12.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/13.jpg",
+        "id": "image13",
+        "date": "25/10/2022",
+        "description": "AI-generated artwork"
+      },
+      {
+        "type": "image",
+        "src": "/img/Books/14.jpg",
+        "id": "image14",
+        "date": "28/10/2022",
+        "description": "Second image of AI-Generated Art"
+      }
+    ],
+    "text": "This is a project of graphic and digital experimentation where the idea is to use typographic vignettes, once widely used once widely used, but now very much absent from books. Once common to books, they've disappeared from our daily lives. The idea is to create graphic forms based on these same vignettes, using 3d and particle simulation to give them a new life, whether physical or digital."
+  }
 ]
