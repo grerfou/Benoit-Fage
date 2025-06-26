@@ -2,41 +2,55 @@
   {
     "id": "0",
     "imageProject": "/img/ImgPres/1.jpg",
-    "titre": "Self_molding",
-    "Tools": "[ Rhino ]",
+    "titre": "Polaris",
+    "Tools": "[ C/C++, Raylib ]",
     "Type": "[ Experimental ]",
-    "State": "[ Process ]",
-    "Date": "[ 2020 ]",
+    "State": "[ Complete ]",
+    "Date": "[ 2025 ]",
     "image": [
       {
-        "type": "video",
-        "src": "/img/Self_molding/para.mp4",
+        "type": "image",
+        "src": "/img/minitel.jpg",
         "id": "image1",
         "date": "01/07/2022",
         "description": "First image"
       },
       {
         "type": "image",
-        "src": "/img/Self_molding/mold-one.jpg",
+        "src": "/img/minitel.jpg",
         "id": "image1",
         "date": "01/07/2022",
         "description": "First image"
       },
       {
         "type": "image",
-        "src": "/img/Self_molding/mold-to.jpg",
+        "src": "/img/minitel.jpg",
         "id": "image1",
         "date": "01/07/2022",
         "description": "First image"
       },
       {
         "type": "image",
-        "src": "/img/Self_molding/mold-tree.jpg",
+        "src": "/img/minitel.jpg",
+        "id": "image1",
+        "date": "01/07/2022",
+        "description": "First image"
+      },
+      {
+        "type": "image",
+        "src": "/img/minitel.jpg",
+        "id": "image1",
+        "date": "01/07/2022",
+        "description": "First image"
+      },
+      {
+        "type": "image",
+        "src": "/img/minitel.jpg",
         "id": "image1",
         "date": "01/07/2022",
         "description": "First image"
       }
-    ],
+          ],
     "text": "This project consists of rethinking and questioning manufacturing processes in more natural ways with less human intervention. As I'm very intrigued by the growth of natural elements, I've decided to use this natural process to produce parts. In a nutshell, I want to grow parts on trees. "
   },
   {
