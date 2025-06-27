@@ -3,7 +3,7 @@
     <!-- En-tête -->
     <div class="FlexContainer">
       <div class="flex-item">∫¬√</div>
-      <div class="flex-item">benoit fage</div>
+      <div class="flex-item">Benoit Fage</div>
       <div class="flex-item">
         <button @click="toggleMenu" :class="buttonClass">{{ buttonText }}</button>
       </div>
@@ -98,6 +98,10 @@ export default {
   font-family: "Terminal_Grotesque";
   src: url("/public/font/terminal-grotesque.ttf");
 }
+@font-face {
+  font-family: "test";
+  src: url("/public/font/IBMPlexSans-LightItalic.ttf");
+}
 
 /* Liens */
 a {
@@ -119,7 +123,7 @@ li {
   z-index: 1100;
 }
 .flex-item {
-  font-family: "NeuePowerTrial-Regular";
+  font-family: "test";
   font-weight: 500;
 }
 .menu-button,
@@ -127,7 +131,7 @@ li {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  font-family: "NeuePowerTrial-Regular";
+  font-family: "test";
   font-size: 1rem;
 }
 .menu-button {

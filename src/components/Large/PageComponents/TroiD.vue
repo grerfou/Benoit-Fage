@@ -17,27 +17,26 @@ const renderer = shallowRef(null);
 const model = shallowRef(null);
 const clock = shallowRef(new THREE.Clock());
 
-// Pour stocker la position de la souris normalisée (-1 à 1)
 const mouse = { x: 0, y: 0 };
+let animationInterval = null;
 
 function initThree() {
   scene.value = new THREE.Scene();
 
   camera.value = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.value.position.z = 5;
+  camera.value.position.y = 1;
+  camera.value.position.x = -1;
 
-  renderer.value = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.value = new THREE.WebGLRenderer({ alpha: true, antialias: false }); // Antialias désactivé
   renderer.value.setSize(window.innerWidth, window.innerHeight);
-  renderer.value.setPixelRatio(window.devicePixelRatio);
+  renderer.value.setPixelRatio(Math.min(window.devicePixelRatio, 1.5)); // Résolution plafonnée
   renderer.value.setClearColor(0x000000, 0);
   backgroundContainer.value.appendChild(renderer.value.domElement);
 
-  const light = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.value.add(light);
-
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.6);
-  directionalLight.position.set(5, 10, 7.5);
-  scene.value.add(directionalLight);
+  // Lumière simplifiée
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+  scene.value.add(ambientLight);
 
   window.addEventListener('resize', onWindowResize);
   window.addEventListener('mousemove', onMouseMove);
@@ -51,29 +50,46 @@ function loadModel() {
 
   loader.load(modelUrl, (gltf) => {
     model.value = gltf.scene;
+
+    // Échelle ajustée
+    model.value.scale.set(1.5, 1.5, 1.5);
+
+    // Appliquer alpha/transparence
+    model.value.traverse((child) => {
+      if (child.isMesh) {
+        const mat = child.material;
+        (Array.isArray(mat) ? mat : [mat]).forEach((m) => {
+          m.transparent = true;
+          m.opacity = 0.3;
+        });
+      }
+    });
+
     scene.value.add(model.value);
-    animate();
+    startAnimation(); // Animation allégée
   }, undefined, (error) => {
     console.error('Erreur de chargement du modèle :', error);
   });
 }
 
-function animate() {
-  requestAnimationFrame(animate);
+// Animation allégée (FPS réduit)
+function startAnimation() {
+  const fps = 30;
+  const interval = 1000 / fps;
 
-  const delta = clock.value.getDelta();
+  animationInterval = setInterval(() => {
+    const delta = clock.value.getDelta();
 
-  if (model.value) {
-    // Rotation basée sur la souris
-    model.value.rotation.y = mouse.x * Math.PI;   // Rotation horizontale
-    model.value.rotation.x = mouse.y * Math.PI * 0.5; // Rotation verticale (limitée)
-  }
+    if (model.value) {
+      model.value.rotation.y = mouse.x * Math.PI;
+      model.value.rotation.x = mouse.y * Math.PI * 0.5;
+    }
 
-  renderer.value.render(scene.value, camera.value);
+    renderer.value.render(scene.value, camera.value);
+  }, interval);
 }
 
 function onMouseMove(event) {
-  // Convertir en coordonnées normalisées (-1 à 1)
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
   mouse.y = -((event.clientY / window.innerHeight) * 2 - 1);
 }
@@ -90,6 +106,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  clearInterval(animationInterval);
   window.removeEventListener('resize', onWindowResize);
   window.removeEventListener('mousemove', onMouseMove);
   if (renderer.value) renderer.value.dispose();

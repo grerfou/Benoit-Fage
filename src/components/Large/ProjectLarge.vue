@@ -1,3 +1,62 @@
+<template>
+  <FullScreenMenu />
+
+  <div class="project-page">
+    <!-- Colonne gauche (Texte) -->
+    <div class="left-column" v-if="projectData">
+      <!-- Partie haute : retour + titre -->
+      <div class="header-section">
+        <div class="nav">
+          <h3><router-link to="/work">«</router-link></h3>
+        </div>
+        <h3 class="titles">{{ projectData.titre }}</h3>
+      </div>
+
+      <!-- Partie basse : Infos + description -->
+      <div class="content-section">
+        <div class="info-block">
+          <h4>Tools</h4>
+          <p>{{ projectData.Tools || 'N/A' }}</p>
+
+          <h4>Type</h4>
+          <p>{{ Array.isArray(projectData.Type) ? projectData.Type.join(', ') : projectData.Type || 'N/A' }}</p>
+
+          <h4>Date</h4>
+          <p>{{ projectData.Date || 'N/A' }}</p>
+
+          <h4>State</h4>
+          <p>{{ projectData.State || 'N/A' }}</p>
+        </div>
+
+        <p class="ExplainText">{{ projectData.text || 'No description available' }}</p>
+      </div>
+    </div>
+
+    <!-- Colonne droite (Images) -->
+    <div class="right-column" ref="scrollContainer" v-if="projectData">
+      <div class="ImgData" v-for="(item, index) in projectData.image" :key="index">
+        <img
+          v-if="item.type === 'image'"
+          :src="item.src"
+          :id="item.id"
+          :data-date="item.date"
+          :data-description="item.description"
+          :alt="item.description || 'Project image'" />
+
+        <video
+          v-else-if="item.type === 'video'"
+          controls
+          :id="item.id"
+          :data-date="item.date"
+          :data-description="item.description">
+          <source :src="item.src" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue';
 import { useRoute } from 'vue-router';
@@ -54,7 +113,7 @@ onMounted(async () => {
       wrapper: scrollContainer.value,
       content: scrollContainer.value,
       smooth: true,
-      duration: 1.7,
+      duration: 1.2,
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
 
@@ -72,64 +131,13 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<template>
-  <FullScreenMenu />
-
-  <div class="project-page">
-    <div class="left-column" v-if="projectData">
-      <div class="nav">
-        <h3><router-link to="/work">«</router-link></h3>
-      </div>
-
-      <h3 class="titles">{{ projectData.titre }}</h3>
-
-      <div class="info-block">
-        <h4>Tools</h4>
-        <p>{{ projectData.Tools || 'N/A' }}</p>
-
-        <h4>Type</h4>
-        <p>{{ Array.isArray(projectData.Type) ? projectData.Type.join(', ') : projectData.Type || 'N/A' }}</p>
-
-        <h4>Date</h4>
-        <p>{{ projectData.Date || 'N/A' }}</p>
-
-        <h4>State</h4>
-        <p>{{ projectData.State || 'N/A' }}</p>
-      </div>
-
-      <p class="ExplainText">{{ projectData.text || 'No description available' }}</p>
-    </div>
-
-    <div class="right-column" ref="scrollContainer" v-if="projectData">
-      <div class="ImgData" v-for="(item, index) in projectData.image" :key="index">
-        <img
-          v-if="item.type === 'image'"
-          :src="item.src"
-          :id="item.id"
-          :data-date="item.date"
-          :data-description="item.description"
-          :alt="item.description || 'Project image'" />
-
-        <video
-          v-else-if="item.type === 'video'"
-          controls
-          :id="item.id"
-          :data-date="item.date"
-          :data-description="item.description">
-          <source :src="item.src" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-    </div>
-  </div>
-</template>
-
 <style scoped>
 .project-page {
   display: grid;
   grid-template-columns: 1fr 1fr;
   height: 87vh;
-  padding: 1vh;
+  gap: 2rem;
+  padding: 3vh;
   overflow: hidden;
   border: 1px solid black;
   font-weight: 900;
@@ -138,18 +146,23 @@ onBeforeUnmount(() => {
 .left-column {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  overflow-y: auto;
-  padding-right: 1rem;
-  min-width: 0; /* Permet au contenu de ne pas déborder */
+  min-width: 0;
+  overflow: hidden;
 }
 
-.left-column p,
-.ExplainText {
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-  hyphens: auto;
+.header-section {
+  flex-shrink: 0;
+  border-bottom: 1px solid black;
+}
+
+.content-section {
+  padding-top: 6vh;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .right-column {
@@ -167,12 +180,11 @@ onBeforeUnmount(() => {
 }
 
 .titles {
-  font-size: clamp(1rem, 6vw, 4rem);
+  font-size: clamp(2rem, 6vw, 4rem);
   margin-bottom: 1rem;
   font-family: 'NeuePowerTrial-Regular';
   color: black;
 }
-
 
 .info-block h4 {
   font-family: 'TWKBurns-Light';
@@ -184,13 +196,19 @@ onBeforeUnmount(() => {
   font-size: small;
   margin: 0 0 1rem;
   font-weight: lighter;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .ExplainText {
   text-align: justify;
   font-family: 'TWKBurns-Regular';
-  margin-top: 2rem;
+  margin-top: 1rem;
   margin-bottom: 5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .ImgData img,

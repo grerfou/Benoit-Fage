@@ -68,7 +68,7 @@ const categories = ['All', 'Art', 'Web', 'Writing', 'Software/Tools']
 
 const projects = ref([
   {
-    title: 'Masters Diploma',
+    title: 'Polaris',
     year: '2025',
     type: 'Art',
     description: 'Un projet sur les matériaux vivants avec beaucoup de détails intéressants à lire en défilement.',
@@ -76,7 +76,7 @@ const projects = ref([
     image: '/img/minitel.jpg',
   },
   {
-    title: 'Masters Dissertation',
+    title: 'Through the digital manifestos',
     year: '2025',
     type: 'Research',
     description: "In this master's thesis...",

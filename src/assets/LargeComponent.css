@@ -1,4 +1,9 @@
 
+@font-face {
+  font-family: test;
+  src: url(/font/IBMPlexSans-Medium.woff);
+}
+
 
 .parentElement
 {
@@ -33,7 +38,7 @@
   margin: 0;
   padding-top: 65vh;
   font-size: 6rem;
-  font-family: 'NeuePowerTrial-Regular';
+  font-family: 'test';
 
   -webkit-user-select: none;  
   -moz-user-select: none;    
