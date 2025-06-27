@@ -49,7 +49,6 @@
 // export default router;
 
 
-
 import { createRouter, createWebHistory } from 'vue-router';
 
 import HomeLarge from '../components/Large/HomeLarge.vue';
@@ -62,86 +61,55 @@ import WorkSmall from '../components/Small/WorkSmall.vue';
 import ContactSmall from '../components/Small/ContactSmall.vue';
 import ProjectSmall from '../components/Small/ProjectSmall.vue';
 
-// Routes pour grands écrans (sans la route '/')
+// Routes pour grands écrans
 const largeRoutes = [
+  { path: '/', name: 'HomeLarge', component: HomeLarge },
   { path: '/work', name: 'WorkLarge', component: WorkLarge },
   { path: '/contact', name: 'ContactLarge', component: ContactLarge },
   { path: '/project/:id', name: 'ProjectLarge', component: ProjectLarge, props: true }
 ];
 
-// Routes pour petits écrans (sans la route '/')
+// Routes pour petits écrans
 const smallRoutes = [
+  { path: '/', name: 'HomeSmall', component: HomeSmall },
   { path: '/work', name: 'WorkSmall', component: WorkSmall },
   { path: '/contact', name: 'ContactSmall', component: ContactSmall },
   { path: '/project/:id', name: 'ProjectSmall', component: ProjectSmall, props: true }
 ];
 
-// Route '/' initiale (petite version par défaut)
-const initialRootRoute = {
-  path: '/',
-  name: 'HomeSmall',
-  component: HomeSmall
-};
-
-// Route par défaut catch-all avec redirection vers '/'
+// Route par défaut pour gérer les routes non définies
 const defaultRoute = {
-  path: '/:pathMatch(.*)*',
-  name: 'DefaultRoute',
-  redirect: '/'
+  path: '/:pathMatch(.*)*', // Catch-all route
+  redirect: '/' // Redirection vers la page d'accueil par défaut
 };
 
-// Création du routeur avec '/' et la route par défaut
 const router = createRouter({
   history: createWebHistory(),
-  routes: [
-    initialRootRoute,
-    defaultRoute
-  ]
+  routes: [defaultRoute] // Initialiser avec une route par défaut
 });
 
-let currentIsLargeScreen = window.innerWidth > 768;
-
 export const setupRouter = (isLargeScreen) => {
-  if (isLargeScreen === currentIsLargeScreen) {
-    return; // pas besoin de changement
-  }
-
-  // Supprimer toutes les routes sauf '/' et la route par défaut
+  // Supprimer toutes les routes existantes avant d'ajouter les nouvelles
   router.getRoutes().forEach(route => {
-    if (route.name && route.name !== 'DefaultRoute' && route.name !== 'HomeSmall' && route.name !== 'HomeLarge') {
+    if (route.name) {
       router.removeRoute(route.name);
     }
   });
 
-  // Gérer la route '/' selon la taille (HomeSmall ou HomeLarge)
-  if (isLargeScreen && router.hasRoute('HomeSmall')) {
-    router.removeRoute('HomeSmall');
-    router.addRoute({ path: '/', name: 'HomeLarge', component: HomeLarge });
-  }
-  else if (!isLargeScreen && router.hasRoute('HomeLarge')) {
-    router.removeRoute('HomeLarge');
-    router.addRoute({ path: '/', name: 'HomeSmall', component: HomeSmall });
+  // Ajouter les routes appropriées en fonction de la taille de l'écran
+  if (isLargeScreen) {
+    largeRoutes.forEach(route => router.addRoute(route));
+  } else {
+    smallRoutes.forEach(route => router.addRoute(route));
   }
 
-  // Ajouter les autres routes spécifiques
-  const routesToAdd = isLargeScreen ? largeRoutes : smallRoutes;
-  routesToAdd.forEach(route => {
-    if (!router.hasRoute(route.name)) {
-      router.addRoute(route);
-    }
+  // Attendre que le routeur soit prêt avant de rediriger
+  router.isReady().then(() => {
+    router.replace('/'); // Rediriger vers la page d'accueil
   });
-
-  currentIsLargeScreen = isLargeScreen;
 };
 
-// Setup initial
-setupRouter(currentIsLargeScreen);
-
-// Écoute des changements de taille
-window.addEventListener('resize', () => {
-  const isLarge = window.innerWidth > 768;
-  setupRouter(isLarge);
-});
+// Appeler setupRouter immédiatement après la création du routeur
+setupRouter(window.innerWidth > 768); // Exemple de breakpoint pour grand/petit écran
 
 export default router;
-

@@ -105,6 +105,11 @@ a {
   color: white;
 }
 
+li {
+  list-style: none;
+}
+
+
 /* En-tête */
 .FlexContainer {
   display: flex;
