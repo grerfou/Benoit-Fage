@@ -53,8 +53,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import gsap from 'gsap'
 
 const router = useRouter()
 
@@ -116,6 +117,14 @@ function updateMousePosition(e) {
   mouseX.value = e.clientX
   mouseY.value = e.clientY
 }
+
+onMounted(() => {
+  gsap.fromTo(
+    '.portfolio-wrapper',
+    { opacity: 0, y: 200 },
+    { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }
+  )
+})
 </script>
 
 <style scoped>

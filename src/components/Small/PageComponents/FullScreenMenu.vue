@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- En-tête -->
-    <div class="FlexContainer">
+    <div :class="['FlexContainer', { 'menu-open': isCircleExpanded }]">
       <div class="flex-item">∫¬√</div>
-      <div class="flex-item">benoit fage</div>
+      <div class="flex-item">Benoit Fage</div>
       <div class="flex-item">
         <button @click="toggleMenu" :class="buttonClass">{{ buttonText }}</button>
       </div>
@@ -17,14 +17,26 @@
         :class="{ 'fade-out': isFadingOut }"
       >
         <ul>
-          <li><router-link to="/" @click.native="toggleMenu">Home</router-link></li>
-          <li><router-link to="/work" @click.native="toggleMenu">Work</router-link></li>
-          <li><router-link to="/contact" @click.native="toggleMenu">About</router-link></li>
+          <li>
+            <a href="#" @click.prevent="handleMenuLink('/')">
+              <span v-for="(char, i) in 'Home'" :key="'home' + i" class="menu-letter">{{ char }}</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" @click.prevent="handleMenuLink('/work')">
+              <span v-for="(char, i) in 'Work'" :key="'work' + i" class="menu-letter">{{ char }}</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" @click.prevent="handleMenuLink('/contact')">
+              <span v-for="(char, i) in 'About'" :key="'about me' + i" class="menu-letter">{{ char }}</span>
+            </a>
+          </li>
         </ul>
       </div>
     </div>
 
-    <!-- Cercle qui se dilate -->
+    <!-- Cercle animé -->
     <div
       ref="circle"
       class="circle-expand"
@@ -34,14 +46,16 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   name: "FullScreenMenuComponent",
   data() {
     return {
-      isMenuVisible: false,        // Affichage du menu
-      isContentVisible: false,     // Affichage du menu-content
-      isCircleExpanded: false,     // Expansion du cercle
-      isFadingOut: false           // Transition de sortie du contenu
+      isMenuVisible: false,
+      isContentVisible: false,
+      isCircleExpanded: false,
+      isFadingOut: false
     };
   },
   computed: {
@@ -55,41 +69,65 @@ export default {
   methods: {
     toggleMenu() {
       if (!this.isCircleExpanded) {
-        // OUVERTURE
         this.isMenuVisible = true;
         this.isContentVisible = false;
         this.isFadingOut = false;
 
-        // Expand le cercle puis affiche le contenu
         requestAnimationFrame(() => {
           this.isCircleExpanded = true;
         });
 
         setTimeout(() => {
           this.isContentVisible = true;
-        }, 400); // attendre que le cercle ait bien commencé à s’ouvrir
-
+          gsap.fromTo('.menu-letter', {
+            y: -40,
+            opacity: 0
+          }, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.03,
+            duration: 0.4,
+            ease: 'power2.out'
+          });
+        }, 400);
       } else {
-        // FERMETURE
-        this.isFadingOut = true;
-        this.isContentVisible = false;
-
-        setTimeout(() => {
-          this.isCircleExpanded = false;
-        }, 300); // après disparition du contenu
-
-        setTimeout(() => {
-          this.isMenuVisible = false;
-          this.isFadingOut = false;
-        }, 900); // après fermeture complète du cercle
+        this.closeMenu();
       }
+    },
+
+    closeMenu(callback) {
+      this.isFadingOut = true;
+
+      gsap.to('.menu-letter', {
+        y: -30,
+        opacity: 0,
+        stagger: 0.02,
+        duration: 0.3,
+        ease: 'power1.in',
+        onComplete: () => {
+          this.isContentVisible = false;
+          setTimeout(() => {
+            this.isCircleExpanded = false;
+          }, 200);
+          setTimeout(() => {
+            this.isMenuVisible = false;
+            this.isFadingOut = false;
+            if (callback) callback();
+          }, 600);
+        }
+      });
+    },
+
+    handleMenuLink(path) {
+      this.closeMenu(() => {
+        this.$router.push(path);
+      });
     }
   }
-};
+}
 </script>
 
 <style scoped>
-/* Fonts */
 @font-face {
   font-family: "NeuePowerTrial-Regular";
   src: url("/public/font/NeuePowerTrial-Regular.woff");
@@ -98,11 +136,18 @@ export default {
   font-family: "Terminal_Grotesque";
   src: url("/public/font/terminal-grotesque.ttf");
 }
+@font-face {
+  font-family: "test";
+  src: url("/public/font/IBMPlexSans-LightItalic.ttf");
+}
 
-/* Liens */
 a {
   text-decoration: none;
   color: white;
+}
+
+li {
+  list-style: none;
 }
 
 /* En-tête */
@@ -112,18 +157,27 @@ a {
   align-items: center;
   position: relative;
   z-index: 1100;
+  transition: color 0.3s ease;
 }
 .flex-item {
-  font-family: "NeuePowerTrial-Regular";
+  font-family: "test";
   font-weight: 500;
+  transition: color 0.3s ease;
 }
+
+/* Quand menu ouvert → texte en blanc */
+.FlexContainer.menu-open .flex-item {
+  color: white;
+}
+
 .menu-button,
 .menu-button-exit {
   border: none;
   cursor: pointer;
   background-color: transparent;
-  font-family: "NeuePowerTrial-Regular";
+  font-family: "test";
   font-size: 1rem;
+  transition: color 0.3s ease;
 }
 .menu-button {
   color: black;
@@ -132,27 +186,25 @@ a {
   color: white;
 }
 
-/* Menu plein écran */
+/* Menu */
 .full-screen-menu {
   position: fixed;
+  z-index: 10;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   color: white;
-  z-index: 100;
   display: flex;
   flex-direction: column-reverse;
   justify-content: space-between;
   align-items: flex-start;
-  padding-left: 0.3rem;
   padding-bottom: 7vh;
   font-size: 4rem;
   font-family: "Terminal_Grotesque";
   overflow: hidden;
 }
 
-/* Contenu du menu */
 .menu-content {
   transition: opacity 0.3s ease-in-out;
   opacity: 1;
@@ -161,23 +213,30 @@ a {
   opacity: 0;
 }
 
-/* Cercle animé */
+/* Cercle */
 .circle-expand {
   position: fixed;
+  z-index: 5;
   top: 0;
   right: 0;
   width: 80px;
   height: 80px;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgb(0, 0, 0);
   border-radius: 50%;
   transform-origin: center;
   transform: translate(50%, -50%) scale(0);
   transition: transform 0.3s ease-in-out;
-  z-index: -1;
   pointer-events: none;
 }
 .circle-expand-active {
   transform: translate(50%, -50%) scale(100);
+}
+
+/* Animation lettre par lettre */
+.menu-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-30px);
 }
 </style>
 

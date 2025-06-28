@@ -4,11 +4,9 @@
   <div class="project-page">
     <!-- Colonne gauche (Texte) -->
     <div class="left-column" v-if="projectData">
+      
       <!-- Partie haute : retour + titre -->
       <div class="header-section">
-        <div class="nav">
-          <h3><router-link to="/work">«</router-link></h3>
-        </div>
         <h3 class="titles">{{ projectData.titre }}</h3>
       </div>
 

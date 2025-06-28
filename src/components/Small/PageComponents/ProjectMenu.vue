@@ -1,370 +1,230 @@
 <template>
-  <!-- Menu de navigation -->
-  <ul class="menu item5">
-    <li @click="focusPoint(0)" @touchstart="focusPoint(0)">Self_molding</li>
-    <li @click="focusPoint(1)" @touchstart="focusPoint(1)">Turing_Glasses</li>
-    <li @click="focusPoint(2)" @touchstart="focusPoint(2)">Ambient_Exp</li>
-    <li @click="focusPoint(3)" @touchstart="focusPoint(3)">Ant_footprint</li>
-    <li @click="focusPoint(4)" @touchstart="focusPoint(4)">Whether_Organism</li>
-    <li @click="focusPoint(5)" @touchstart="focusPoint(5)">Room_tour</li>
-    <li @click="focusPoint(6)" @touchstart="focusPoint(6)">Book's_Particles</li>
-  </ul>
-  
-  <!-- Conteneur pour l'affichage des points 3D -->
-  <div ref="sphereContainer" class="sphere-container item6"></div>
-  
-  
-  <!-- Conteneurs pour les images -->
-  <div v-if="selectedImageIndex !== null" class="image-overlay">
-    <img :src="images[selectedImageIndex]" alt="" class="image" />
-  </div>
+  <div class="scroll-wrapper" ref="scrollWrapper">
+    <div class="scroll-content">
+      <div class="portfolio-wrapper">
+        <!-- Filtres -->
+        <div class="filters">
+          <button
+            v-for="cat in categories"
+            :key="cat"
+            @click="activeCategory = cat"
+            :class="{ active: activeCategory === cat }"
+          >
+            {{ cat }}
+          </button>
+        </div>
 
-  <div v-if="isFocused" class="close-button" @click="resetFocus">«</div>
+        <!-- Projets -->
+        <div class="projects-container">
+          <div
+            v-for="(project, index) in filteredProjects"
+            :key="index"
+            class="project-row"
+            @click="goToProject(index)"
+          >
+            <div class="text-content">
+              <span class="title">{{ project.title }}</span>
+              <span class="year">{{ project.year }}</span>
+              <span class="type">{{ project.type }}</span>
+            </div>
+            <div class="preview-image-wrapper">
+              <img :src="project.image" alt="project image" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import * as THREE from 'three';
-import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import Lenis from '@studio-freight/lenis'
+import gsap from 'gsap'  // Import GSAP
 
-const sphereContainer = ref(null);
-const scene = shallowRef(null);
-const camera = shallowRef(null);
-const renderer = shallowRef(null);
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-const points = [];
-const isFocused = ref(false);
-const selectedImageIndex = ref(null);
-const selectedPoint = ref(null);
-const router = useRouter();
+const scrollWrapper = ref(null)
+const router = useRouter()
 
-const images = [
-  '/img/ImgPres/1.jpg',
-  '/img/ImgPres/2.jpg',
-  '/img/ImgPres/3.jpeg',
-  '/img/ImgPres/4.jpg',
-  '/img/ImgPres/5.jpg',
-  '/img/ImgPres/6.jpg',
-  '/img/ImgPres/7.jpeg',
-];
+const activeCategory = ref('All')
+const categories = ['All', 'Art', 'Web', 'Writing', 'Software/Tools']
 
-const positions = [
-  new THREE.Vector3(1, 2, 1),
-  new THREE.Vector3(-1, 0, 1),
-  new THREE.Vector3(1, -0, -1),
-  new THREE.Vector3(-1, 2, -1),
-  new THREE.Vector3(2, 1, 0),
-  new THREE.Vector3(0, 3, 0),
-  new THREE.Vector3(0, 1, 2)
-];
+const projects = ref([
+  {
+    title: 'Polaris',
+    year: '2025',
+    type: 'Art',
+    category: 'Art',
+    image: '/img/minitel.jpg',
+  },
+  {
+    title: 'Through the digital manifestos',
+    year: '2025',
+    type: 'Research',
+    category: 'Writing',
+    image: '/img/ibm_ascii.webp',
+  },
+  {
+    title: 'Room_Tour',
+    year: '2023',
+    type: 'Web',
+    category: 'Web',
+    image: '/img/3.jpg',
+  },
+])
 
-const initialCameraPosition = new THREE.Vector3(3, 5, 3);
+const filteredProjects = computed(() => {
+  return activeCategory.value === 'All'
+    ? projects.value
+    : projects.value.filter(p => p.category === activeCategory.value)
+})
 
-const pointMaterial = new THREE.MeshBasicMaterial({ 
-  color: 0x000000, 
-  wireframe: true,
-  opacity: 0.5
-});
-
-function initThree() {
-  // Initialisation de la scène
-  scene.value = new THREE.Scene();
-  
-  // Initialisation de la caméra
-  camera.value = new THREE.PerspectiveCamera(100, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.value.position.copy(initialCameraPosition);
-
-  // Configuration du renderer
-  renderer.value = new THREE.WebGLRenderer({ alpha: true });
-  sphereContainer.value.appendChild(renderer.value.domElement);
-  updateRendererSize();
-
-  // Création des points
-  positions.forEach((pos, index) => {
-    const pointGeometry = new THREE.SphereGeometry(0.1, 12, 12);
-    const point = new THREE.Mesh(pointGeometry, pointMaterial.clone());
-    point.position.copy(pos);
-    point.userData = { index };
-    scene.value.add(point);
-    points.push(point);
-  });
-
-  // Ajout de la lumière
-  const light = new THREE.AmbientLight(0xffffff);
-  scene.value.add(light);
-
-  // Contrôles de la caméra
-  const controls = new OrbitControls(camera.value, renderer.value.domElement);
-  controls.enableDamping = true;
-  controls.dampingFactor = 0.25;
-
-  // Écouteurs d'événements
-  window.addEventListener('resize', onWindowResize);
-  renderer.value.domElement.addEventListener('click', onDocumentMouseClick);
-
-  animate();
+function goToProject(index) {
+  router.push({ name: 'ProjectSmall', params: { id: index } })
 }
-
-
-function animate() {
-  requestAnimationFrame(animate);
-  renderer.value.render(scene.value, camera.value);
-}
-
-function updateRendererSize() {
-  if (sphereContainer.value) {
-    const width = sphereContainer.value.clientWidth;
-    const height = sphereContainer.value.clientHeight;
-
-    renderer.value.setSize(width, height);
-    camera.value.aspect = width / height;
-    camera.value.updateProjectionMatrix();
-  }
-}
-
-
-function onWindowResize() {
-  updateRendererSize();
-}
-
-function onDocumentMouseClick(event) {
-  const rect = renderer.value.domElement.getBoundingClientRect();
-  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-  raycaster.setFromCamera(mouse, camera.value);
-  const intersects = raycaster.intersectObjects(points);
-
-  if (intersects.length > 0) {
-    const clickedPoint = intersects[0].object;
-
-    if (selectedPoint.value) {
-      selectedPoint.value.material.copy(pointMaterial);
-    }
-
-    selectedPoint.value = clickedPoint;
-    clickedPoint.material.color.set(0xff0000); // Changement de couleur pour le point sélectionné
-
-    const pointIndex = clickedPoint.userData.index;
-    navigateToProject(pointIndex);
-  }
-}
-
-function navigateToProject(index) {
-  const paths = [
-    '/self_molding',
-    '/turing_glasses',
-    '/ambient_exp',
-    '/ant_footprint',
-    '/whether_organism',
-    '/room_tour',
-    '/books_particles'
-  ];
-
-  if (paths[index]) {
-    router.push({ name: 'ProjectSmall', params: { id: index } });
-  }
-}
-
-function removeCircle() {
-  const text = document.querySelector('.rotating-text');
-  if (text){
-    text.remove();
-  }
-}
-
-
-// Fonction pour ajouter un cercle en CSS à la position 2D calculée
-function showCircleAtPosition(position2D) {
-  // Si un cercle existe déjà, le supprimer
-  let conteneur = document.querySelector('.sphere-container');
-
-  // Créer un texte qui tourne autour du cercle
-  const text = document.createElement('div');
-  text.className = 'rotating-text';
-  text.innerText = "./CLICK ¬"; // Remplace par le texte souhaité
-
-  text.style.position = 'absolute';
-  text.style.padding = '7px';
-  text.style.marginTop = '-120px';
-  text.style.marginLeft = '-143px';
-  text.style.top = '50%';
-  text.style.left = '50%';
-  text.style.transformOrigin = 'center bottom';
-  text.style.fontSize = '30px';
-  text.style.fontFamily = 'Terminal_Grotesque_open';
-
-  conteneur.appendChild(text);
-}
-
-
-function get2DPositionOfSphere(sphere, camera, renderer) {
-  // Cloner la position 3D de la sphère
-  const vector = sphere.position.clone();
-
-  // Projeter les coordonnées 3D en coordonnées écran (NDC)
-  vector.project(camera);
-
-  // Récupérer les dimensions du canvas
-  const canvasWidth = renderer.domElement.clientWidth;
-  const canvasHeight = renderer.domElement.clientHeight;
-
-  // Calculer les coordonnées en pixels (de -1 à 1 vers 0 à canvasWidth/Height)
-  const x = (vector.x * 0.5 + 0.5) * canvasWidth;
-  const y = (-(vector.y * 0.5) + 0.5) * canvasHeight; // Inverser l'axe Y pour correspondre aux coordonnées de l'écran
-
-  return { x, y };
-}
-
-const isAnimating = ref(false); // Ajout de cette variable
-
-
-function focusPoint(index) {
-  if (isAnimating.value) return; // Ignore la sélection si une animation est en cours
-
-  if (selectedPoint.value) {
-    selectedPoint.value.material.copy(pointMaterial); // Réinitialiser la couleur du point précédent
-  }
-
-  const targetPoint = points[index];
-  isFocused.value = true;
-  selectedImageIndex.value = index;
-
-  selectedPoint.value = targetPoint;
-  targetPoint.material.color.set(0xff0000); // Changer la couleur pour indiquer la sélection
-
-  const pointPosition = targetPoint.position.clone(); // Position du point sélectionné
-  const distanceFromPoint = 0.5; // Distance fixe que tu veux entre le point et la caméra
-
-  // Calculer la direction de la caméra vers le point
-  const cameraDirection = camera.value.position.clone().sub(pointPosition).normalize(); // Direction de la caméra vers le point
-  const newCameraPosition = pointPosition.clone().add(cameraDirection.multiplyScalar(distanceFromPoint)); // Nouvelle position de la caméra
-
-  // Animer la caméra
-  isAnimating.value = true; // Démarrer l'animation
-  moveCameraSmoothly(camera.value.position.clone(), newCameraPosition, pointPosition, () => {
-    const sphereCenter2D = get2DPositionOfSphere(targetPoint, camera.value, renderer.value);
-    showCircleAtPosition(sphereCenter2D); // Afficher le cercle après l'animation
-    isAnimating.value = false; // Fin de l'animation
-  });
-}
-
-
-
-// Fonction pour déplacer la caméra en douceur
-function moveCameraSmoothly(startPosition, targetPosition, lookAtPosition, callback = null) {
-  const duration = 4000; // Durée de l'animation
-  const startTime = performance.now();
-
-  function animateCamera() {
-    const elapsed = performance.now() - startTime;
-    const t = Math.min(elapsed / duration, 1); // Normaliser le temps
-
-    // Interpolation de la position de la caméra
-    const lerpedPosition = new THREE.Vector3().lerpVectors(startPosition, targetPosition, t);
-    camera.value.position.copy(lerpedPosition);
-
-    // Interpoler la direction pour le lookAt
-    const currentLookAt = new THREE.Vector3(); // Position actuelle du lookAt
-    currentLookAt.copy(camera.value.position).add(camera.value.getWorldDirection(new THREE.Vector3())); // Direction actuelle
-    const lerpedLookAt = new THREE.Vector3().lerpVectors(currentLookAt, lookAtPosition, t); // Nouvelle direction
-
-    camera.value.lookAt(lerpedLookAt); // Mettre à jour le lookAt de la caméra
-
-    // Continuer l'animation
-    if (t < 1) {
-      requestAnimationFrame(animateCamera);
-      removeCircle();
-    } else if (callback) {
-      callback(); // Appeler le callback à la fin de l'animation
-    }
-  }
-
-  animateCamera(); // Démarrer l'animation
-}
-
-function resetFocus() {
-  // Supprimer le cercle quand on réinitialise la vue
-  removeCircle();
-
-  isFocused.value = false;
-  selectedImageIndex.value = null;
-
-  if (selectedPoint.value) {
-    selectedPoint.value.material.copy(pointMaterial);
-  }
-
-  // Déplacer la caméra vers la position initiale
-  moveCameraSmoothly(camera.value.position.clone(), initialCameraPosition, new THREE.Vector3(0, 0, 0)); // Regarde vers le centre
-}
-
-
-
-
 
 onMounted(() => {
-initThree(); // Appel à l'initialisation de la scène
-});
+  // Initialisation du scroll Lenis
+  const lenis = new Lenis({
+    wrapper: scrollWrapper.value,
+    content: scrollWrapper.value.querySelector('.scroll-content'),
+    smooth: true,
+    smoothTouch: true,
+    gestureOrientation: 'vertical',
+    lerp: 0.5,
+  })
 
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', onWindowResize);
-  renderer.value.domElement.removeEventListener('click', onDocumentMouseClick);
-  if (renderer.value) {
-    renderer.value.dispose();
+  const raf = (time) => {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
   }
-});
 
+  requestAnimationFrame(raf)
+
+  // Animation GSAP : les projets arrivent doucement du bas
+  gsap.from('.project-row', {
+    y: 50,
+    opacity: 0,
+    duration: 0.8,
+    ease: 'power3.out',
+    stagger: 0.15,
+    delay: 0.3,
+  })
+})
 </script>
 
 <style scoped>
-@import url(./../../../assets/SmallComponent.css);
-
-.menu {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-family: 'TWKBurns-Light';
-  font-size: 1rem;
-  width: 100%;
-  border-top: 1px solid black; 
-}
-
-.menu li {
-  border-bottom: 1px solid black;
-  cursor: pointer;
-}
-
-.sphere-container {
-  width: 100%;
-  height: 100vh;
+body {
   overflow: hidden;
 }
 
-.sphere-container canvas {
+img{
+  z-index: -1;
+}
+
+.scroll-wrapper {
+  z-index: 1;
+  height: 100vh;
+  overflow: scroll;
+  position: relative;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.scroll-content {
+  height: auto;
+  will-change: transform;
+}
+
+.portfolio-wrapper {
+  padding: 1rem;
+  box-sizing: border-box;
+  font-family: 'IBM';
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+.filters button {
+  background: none;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-family: 'IBM-Bold';
+  transition: all 0.3s ease;
+}
+.filters button.active,
+.filters button:hover {
+  background: black;
+  color: white;
+  border-color: rgb(192, 63, 19);
+}
+
+.projects-container {
+  z-index: -1;
+  border-top: 1px solid black;
+}
+
+.project-row {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: nowrap; /* évite retour à la ligne */
+  cursor: pointer;
+  padding: 1rem 0;
+  border-bottom: 1px dashed black;
+}
+
+.text-content {
+  flex: 1 1 auto; /* peut grandir et rétrécir */
+  min-width: 0; /* permet de rétrécir correctement */
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-image-wrapper {
+  flex: 0 0 150px; /* largeur fixe */
+  height: 100px;
+  overflow: hidden;
+}
+
+.preview-image-wrapper img {
   width: 100%;
   height: 100%;
-  border-bottom: 1px solid black;
+  object-fit: cover;
 }
 
-.close-button {
-  font-size: 2rem;
-  color: #ff0000;
-  cursor: pointer;
+.title {
+  font-family: 'IBM-regular';
+}
+.year {
+  font-family: 'IBM-light';
+}
+.type {
+  font-family: 'IBM-light-i';
 }
 
-.image-overlay {
-  position: absolute;
-  pointer-events: none; /* Les clics passent à travers les images */
-  margin-bottom: 10%;
-  margin-left: 20vw;
-  opacity: 0.5;
-}
-
-.image {
-  width: 100%;
-  max-width: 60vw;
-  height: auto;
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .project-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .preview-image-wrapper {
+    width: 100%;
+    height: auto;
+  }
+  .preview-image-wrapper img {
+    height: auto;
+  }
 }
 </style>
+

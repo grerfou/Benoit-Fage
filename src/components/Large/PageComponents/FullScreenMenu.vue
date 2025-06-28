@@ -4,27 +4,31 @@
     <div class="FlexContainer">
       <div class="flex-item">∫¬√</div>
       <div class="flex-item">Benoit Fage</div>
+
+      <div class="flex-item">
+        <a href="#" @click.prevent="handleMenuLink('/')">
+                <span>Home, </span>
+        </a>
+        <a href="#" @click.prevent="handleMenuLink('/Work')">
+                <span>Work, </span>
+        </a>
+        <a href="#" @click.prevent="handleMenuLink('/contact')">
+                <span>About</span>
+        </a>
+      </div>
+
+
+
+      <!--
       <div class="flex-item">
         <button @click="toggleMenu" :class="buttonClass">{{ buttonText }}</button>
       </div>
+      -->
+
+
     </div>
 
-    <!-- Menu plein écran -->
-    <div v-if="isMenuVisible" class="full-screen-menu">
-      <div
-        class="menu-content"
-        v-show="isContentVisible"
-        :class="{ 'fade-out': isFadingOut }"
-      >
-        <ul>
-          <li><router-link to="/" @click.native="toggleMenu">Home</router-link></li>
-          <li><router-link to="/work" @click.native="toggleMenu">Work</router-link></li>
-          <li><router-link to="/contact" @click.native="toggleMenu">About</router-link></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Cercle qui se dilate -->
+    <!-- Cercle animé -->
     <div
       ref="circle"
       class="circle-expand"
@@ -34,14 +38,16 @@
 </template>
 
 <script>
+import { gsap } from 'gsap'
+
 export default {
   name: "FullScreenMenuComponent",
   data() {
     return {
-      isMenuVisible: false,        // Affichage du menu
-      isContentVisible: false,     // Affichage du menu-content
-      isCircleExpanded: false,     // Expansion du cercle
-      isFadingOut: false           // Transition de sortie du contenu
+      isMenuVisible: false,
+      isContentVisible: false,
+      isCircleExpanded: false,
+      isFadingOut: false
     };
   },
   computed: {
@@ -55,37 +61,65 @@ export default {
   methods: {
     toggleMenu() {
       if (!this.isCircleExpanded) {
-        // OUVERTURE
+        // ▶️ OUVERTURE
         this.isMenuVisible = true;
         this.isContentVisible = false;
         this.isFadingOut = false;
 
-        // Expand le cercle puis affiche le contenu
         requestAnimationFrame(() => {
           this.isCircleExpanded = true;
         });
 
         setTimeout(() => {
           this.isContentVisible = true;
-        }, 400); // attendre que le cercle ait bien commencé à s’ouvrir
 
+          // GSAP entrée
+          gsap.fromTo('.menu-letter', {
+            y: -40,
+            opacity: 0
+          }, {
+            y: 0,
+            opacity: 1,
+            stagger: 0.03,
+            duration: 0.4,
+            ease: 'power2.out'
+          });
+        }, 400);
       } else {
-        // FERMETURE
-        this.isFadingOut = true;
-        this.isContentVisible = false;
-
-        setTimeout(() => {
-          this.isCircleExpanded = false;
-        }, 300); // après disparition du contenu
-
-        setTimeout(() => {
-          this.isMenuVisible = false;
-          this.isFadingOut = false;
-        }, 900); // après fermeture complète du cercle
+        this.closeMenu();
       }
+    },
+
+    closeMenu(callback) {
+      this.isFadingOut = true;
+
+      gsap.to('.menu-letter', {
+        y: -30,
+        opacity: 0,
+        stagger: 0.02,
+        duration: 0.3,
+        ease: 'power1.in',
+        onComplete: () => {
+          this.isContentVisible = false;
+          setTimeout(() => {
+            this.isCircleExpanded = false;
+          }, 200);
+          setTimeout(() => {
+            this.isMenuVisible = false;
+            this.isFadingOut = false;
+            if (callback) callback();
+          }, 600);
+        }
+      });
+    },
+
+    handleMenuLink(path) {
+      this.closeMenu(() => {
+        this.$router.push(path);
+      });
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -103,22 +137,21 @@ export default {
   src: url("/public/font/IBMPlexSans-LightItalic.ttf");
 }
 
-/* Liens */
+/* Base */
 a {
   text-decoration: none;
-  color: white;
 }
-
 li {
   list-style: none;
 }
-
+span{
+  color: black;
+}
 
 /* En-tête */
 .FlexContainer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   position: relative;
   z-index: 1100;
 }
@@ -141,7 +174,7 @@ li {
   color: white;
 }
 
-/* Menu plein écran */
+/* Menu */
 .full-screen-menu {
   position: fixed;
   top: 0;
@@ -161,7 +194,6 @@ li {
   overflow: hidden;
 }
 
-/* Contenu du menu */
 .menu-content {
   transition: opacity 0.3s ease-in-out;
   opacity: 1;
@@ -170,7 +202,7 @@ li {
   opacity: 0;
 }
 
-/* Cercle animé */
+/* Cercle */
 .circle-expand {
   position: fixed;
   top: 0;
@@ -187,6 +219,13 @@ li {
 }
 .circle-expand-active {
   transform: translate(50%, -50%) scale(100);
+}
+
+/* Animation lettre par lettre */
+.menu-letter {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-30px);
 }
 </style>
 

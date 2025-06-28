@@ -1,5 +1,3 @@
-
-  
 <script setup >
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
@@ -53,9 +51,11 @@ onMounted(() => {
 <FullScreenMenu />
   <div class="parentElement">
 
+    <!--
     <div class="nav">
-      <h3><router-link to="/work" @click.native="toggleMenu">«</router-link></h3>
+      <span><router-link to="/work" @click.native="toggleMenu">«</router-link></span>
     </div>
+    -->
     
     <!-- Affichage de l'image principale du projet -->
     <img v-if="projectData && projectData.imageProject" class="imagePres" :src="projectData.imageProject" alt="Image pres"/> 
@@ -125,14 +125,22 @@ onMounted(() => {
   text-justify: auto
 }
 
-.nav
-{
+.nav {
+  position: sticky;
+  top: 0;
+  background-color: none; /* ou autre, pour éviter que ça devienne transparent au scroll */
+  z-index: 10; /* pour qu'elle reste au-dessus du contenu */
+  padding-left: 1%;
+  padding-right: 1%;
+  padding-bottom: 1vh;
+
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   justify-content: space-between;
   align-items: flex-start;
 }
+
 
 .parent
 {
@@ -160,6 +168,10 @@ onMounted(() => {
   text-align: justify;
   padding-left: 5%;
   padding-right: 5%;
+}
+
+span{
+  font-size: 2rem;
 }
 
 h3
@@ -190,7 +202,7 @@ p
 a
 {
   text-decoration: none;
-  color: black;
+  color: rgb(5, 74, 218);
 }
 
 </style>
