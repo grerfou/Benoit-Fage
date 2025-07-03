@@ -1,5 +1,4 @@
 <script setup>
-import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 import ProjectMenu from './PageComponents/ProjectMenu.vue';
 </script>
 
@@ -7,8 +6,7 @@ import ProjectMenu from './PageComponents/ProjectMenu.vue';
 
 <template>
 
-  <FullScreenMenu />
-  <div class="parentElement">
+  <div>
     <ProjectMenu/>
   </div>
 
@@ -25,6 +23,5 @@ export default {
 
 
 <style scoped>
-@import './../../assets/LargeComponent.css';
 </style>
 

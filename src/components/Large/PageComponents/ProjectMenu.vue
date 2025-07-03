@@ -56,6 +56,9 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import gsap from 'gsap'
+import ScrollTrigger from 'gsap/ScrollTrigger'
+
+gsap.registerPlugin(ScrollTrigger)
 
 const router = useRouter()
 
@@ -119,16 +122,76 @@ function updateMousePosition(e) {
 }
 
 onMounted(() => {
+  // Animation globale du wrapper au chargement
   gsap.fromTo(
     '.portfolio-wrapper',
     { opacity: 0, y: 200 },
     { opacity: 1, y: 0, duration: 2, ease: 'power3.out' }
   )
+
+  // Animation header-row au scroll (apparition / disparition)
+  gsap.fromTo(
+    '.header-row',
+    { opacity: 0, y: 50 },
+    {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: '.header-row',
+        start: 'top 90%',
+        end: 'bottom 10%',
+        toggleActions: 'play reverse play reverse',
+      },
+    }
+  )
+
+  // Animation filtres : apparition en cascade depuis la droite au scroll
+  const filtersButtons = gsap.utils.toArray('.filters button')
+  gsap.fromTo(
+    filtersButtons,
+    { opacity: 0, x: 100 },
+    {
+      opacity: 1,
+      x: 0,
+      duration: 0.6,
+      ease: 'power2.out',
+      stagger: 0.15,
+      scrollTrigger: {
+        trigger: '.filters',
+        start: 'top 90%',
+        end: 'bottom 10%',
+        toggleActions: 'play reverse play reverse',
+      },
+    }
+  )
+
+  // Animation des bordures des project-row au scroll
+  const projectRows = gsap.utils.toArray('.project-row')
+
+  projectRows.forEach((row) => {
+    gsap.fromTo(
+      row,
+      { borderTopWidth: 0, borderBottomWidth: 0 },
+      {
+        borderTopWidth: '1px',
+        borderBottomWidth: '1px',
+        duration: 4.5,
+        ease: 'power1.out',
+        scrollTrigger: {
+          trigger: row,
+          start: 'top 95%',
+          end: 'top 40%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    )
+  })
 })
 </script>
 
 <style scoped>
-
 @font-face {
   font-family: IBM-regular;
   src: url(/font/IBMPlexSans-Medium.woff);
@@ -138,7 +201,6 @@ onMounted(() => {
   font-family: IBM-Bold;
   src: url(/font/IBMPlexSans-Bold.woff);
 }
-
 
 @font-face {
   font-family: IBM-light-i;
@@ -155,21 +217,29 @@ onMounted(() => {
   src: url(/font/IBMPlexSans-MediumItalic.woff);
 }
 
-.title{
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.title {
   font-family: 'IBM-regular';
 }
 
-.year{
+.year {
   font-family: 'IBM-light';
 }
 
-.type{
+.type {
   font-family: 'IBM-light-i';
 }
 
 .portfolio-wrapper {
   width: 100%;
   padding: 1rem;
+  padding-top: 10rem;
   position: relative;
   box-sizing: border-box;
   font-family: 'IBM';
@@ -198,7 +268,7 @@ onMounted(() => {
   background: black;
   padding-right: 5vw;
   color: white;
-  border-color: rgb(192, 63, 19);;
+  border-color: rgb(192, 63, 19);
 }
 
 .header-row {
@@ -206,6 +276,9 @@ onMounted(() => {
   grid-template-columns: 1fr 0.5fr 0.7fr 2fr;
   padding: 1rem 0;
   font-weight: bold;
+  /* Ajout initial bordure transparente pour animation */
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
 }
 
 .projects-container {
@@ -216,7 +289,9 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 1fr 0.5fr 0.7fr 2fr;
   padding: 0.5rem 0;
-  border-bottom: 1px dashed black;
+  /* On enlève les bordures statiques */
+  border-top: 0 solid black;
+  border-bottom: 0 solid black;
   cursor: pointer;
   transition: background 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
 }

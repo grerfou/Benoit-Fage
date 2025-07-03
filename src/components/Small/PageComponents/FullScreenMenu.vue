@@ -2,8 +2,6 @@
   <div>
     <!-- En-tête -->
     <div :class="['FlexContainer', { 'menu-open': isCircleExpanded }]">
-      <div class="flex-item">∫¬√</div>
-      <div class="flex-item">Benoit Fage</div>
       <div class="flex-item">
         <button @click="toggleMenu" :class="buttonClass">{{ buttonText }}</button>
       </div>
@@ -17,13 +15,15 @@
         :class="{ 'fade-out': isFadingOut }"
       >
         <ul>
+          
           <li>
             <a href="#" @click.prevent="handleMenuLink('/')">
               <span v-for="(char, i) in 'Home'" :key="'home' + i" class="menu-letter">{{ char }}</span>
             </a>
           </li>
+
           <li>
-            <a href="#" @click.prevent="handleMenuLink('/work')">
+            <a href="#" @click="scrollTo('home'); toggleMenu()">
               <span v-for="(char, i) in 'Work'" :key="'work' + i" class="menu-letter">{{ char }}</span>
             </a>
           </li>

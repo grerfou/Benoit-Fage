@@ -1,64 +1,105 @@
 <template>
-  <div
-    class="loading-screen"
-    :style="{ backgroundColor: backgroundColor }"
-  >
-    <span :style="{ color: textColor }">{{ percentage }}/100</span>
+  <div class="loader-container">
+    <div class="rectangle">
+      <div ref="topLine" class="border-line top"></div>
+      <div ref="rightLine" class="border-line right"></div>
+      <div ref="bottomLine" class="border-line bottom"></div>
+      <div ref="leftLine" class="border-line left"></div>
+    </div>
+    <p>{{ progress }}%</p>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
+import gsap from 'gsap'
 
-const percentage = ref(0)
+const topLine = ref(null)
+const rightLine = ref(null)
+const bottomLine = ref(null)
+const leftLine = ref(null)
 
-const textColor = computed(() => {
-  const c = Math.floor(255 * (1 - percentage.value / 100))
-  return `rgb(${c},${c},${c})`
-})
-
-const backgroundColor = computed(() => {
-  const c = Math.floor(255 * (percentage.value / 100))
-  return `rgb(${c},${c},${c})`
-})
+const progress = ref(0)
 
 onMounted(() => {
-  let progress = 0
-  const interval = setInterval(() => {
-    progress++
-    if (progress > 100) clearInterval(interval)
-    else percentage.value = progress
-  }, 30)
+  const tl = gsap.timeline({
+    onUpdate: () => {
+      progress.value = Math.floor(tl.progress() * 100)
+    }
+  })
+
+  // Animations simultanées
+  tl.to(topLine.value, { width: 0, duration: 2, ease: 'power1.inOut' }, 0)
+  tl.to(bottomLine.value, { width: 0, duration: 2, ease: 'power1.inOut' }, 0)
+  tl.to(rightLine.value, { height: 0, duration: 2, ease: 'power1.inOut' }, 0)
+  tl.to(leftLine.value, { height: 0, duration: 2, ease: 'power1.inOut' }, 0)
 })
 </script>
 
 <style scoped>
-@font-face {
-  font-family: IBM;
-  src: url(/public/font/IBMPlexSans-Bold.woff);
-}
-
-.loading-screen {
-  position: fixed;
-  inset: 0;
+.loader-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  font-weight: bold;
-  font-family: 'IBM';
-  user-select: none;
-  transition: background-color 0.3s linear;
+  justify-content: center;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  overflow: hidden;
 }
 
-.loading-screen span {
-  font-size: 20rem;
+.rectangle {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  /* un peu de marge intérieure pour que les lignes soient un peu détachées des bords */
+  margin: 20px;
 }
 
-/* Media query pour mobile */
-@media (max-width: 768px) {
-  .loading-screen span {
-    font-size: 5rem;
-  }
+.border-line {
+  position: absolute;
+  background-color: black;
+}
+
+/* Ligne du haut */
+.top {
+  top: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform-origin: left center;
+}
+
+/* Ligne du bas */
+.bottom {
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform-origin: right center;
+}
+
+/* Ligne de droite */
+.right {
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  transform-origin: top center;
+}
+
+/* Ligne de gauche */
+.left {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  transform-origin: bottom center;
+}
+
+p {
+  margin-top: 1rem;
+  font-size: 1.2rem;
 }
 </style>
 

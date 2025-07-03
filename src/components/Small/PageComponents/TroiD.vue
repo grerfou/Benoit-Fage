@@ -1,21 +1,18 @@
 <template>
-  <div ref="backgroundContainer" class="background-scene"></div>
+  <div ref="container" class="background-scene"></div>
 </template>
 
 <script setup>
 import * as THREE from 'three';
+import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
-import { onMounted, onBeforeUnmount, ref, shallowRef } from 'vue';
 
-import modelUrl from '/public/model/Boid.glb';
-
-const backgroundContainer = ref(null);
+const container = ref(null);
 const scene = shallowRef(null);
 const camera = shallowRef(null);
 const renderer = shallowRef(null);
 const model = shallowRef(null);
-const clock = shallowRef(new THREE.Clock());
 
 let animationId = null;
 
@@ -25,16 +22,28 @@ function initThree() {
   camera.value = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
   camera.value.position.set(-1, 1, 5);
 
-  renderer.value = new THREE.WebGLRenderer({ alpha: true, antialias: false });
+  // Cleanup previous renderer if any
+  if (renderer.value) {
+    if (renderer.value.domElement.parentNode) {
+      renderer.value.domElement.parentNode.removeChild(renderer.value.domElement);
+    }
+    renderer.value.dispose();
+  }
+
+  renderer.value = new THREE.WebGLRenderer({ alpha: true, antialias: true });
   renderer.value.setSize(window.innerWidth, window.innerHeight);
   renderer.value.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-  renderer.value.setClearColor(0x000000, 0);
-  backgroundContainer.value.appendChild(renderer.value.domElement);
+  renderer.value.setClearColor(0xffffff, 0); // Transparent background
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.9);
+  if (container.value && !container.value.contains(renderer.value.domElement)) {
+    container.value.appendChild(renderer.value.domElement);
+  }
+
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1);
   scene.value.add(ambientLight);
 
   window.addEventListener('resize', onWindowResize);
+  window.addEventListener('scroll', onScroll, { passive: true });
 }
 
 function loadModel() {
@@ -43,66 +52,97 @@ function loadModel() {
   dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
   loader.setDRACOLoader(dracoLoader);
 
-  loader.load(modelUrl, (gltf) => {
-    model.value = gltf.scene;
-    model.value.scale.set(1.5, 1.5, 1.5);
+  loader.load(
+    '/model/computer.glb', 
+    (gltf) => {
+      model.value = gltf.scene;
+      model.value.scale.set(2, 2, 2);
+      model.value.position.y = -1.5; 
 
-    model.value.traverse((child) => {
-      if (child.isMesh) {
-        const mat = child.material;
-        (Array.isArray(mat) ? mat : [mat]).forEach((m) => {
-          m.transparent = true;
-          m.opacity = 0.3;
-        });
-      }
-    });
 
-    scene.value.add(model.value);
-    startAnimation();
-  }, undefined, (error) => {
-    console.error('Erreur de chargement du modèle :', error);
+      model.value.traverse((child) => {
+        if (child.isMesh) {
+          const mats = Array.isArray(child.material) ? child.material : [child.material];
+          mats.forEach((mat) => {
+            mat.transparent = true;
+            mat.opacity = 1;
+            mat.depthWrite = false;
+            mat.needsUpdate = true;
+          });
+        }
+      });
+
+      scene.value.add(model.value);
+      animate();
+
+      // Appliquer l'opacité initiale selon la position de scroll
+      onScroll();
+    },
+    undefined,
+    (error) => console.error('Erreur de chargement :', error)
+  );
+}
+
+function updateOpacity(opacity) {
+  if (!model.value) return;
+  model.value.traverse((child) => {
+    if (child.isMesh) {
+      const mats = Array.isArray(child.material) ? child.material : [child.material];
+      mats.forEach((mat) => {
+        mat.opacity = opacity;
+        mat.transparent = opacity < 1;
+        mat.depthWrite = false;
+        mat.needsUpdate = true;
+      });
+    }
   });
+}
+
+function onScroll() {
+  const scrollY = window.scrollY;
+  const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+  const scrollRatio = Math.min(scrollY / maxScroll, 1);
+
+  const newOpacity = 1 - scrollRatio; // 1 en haut, 0 en bas
+  updateOpacity(newOpacity);
 }
 
 function animate() {
   animationId = requestAnimationFrame(animate);
-
-  const delta = clock.value.getDelta();
-
   if (model.value) {
-    // Rotation continue sur les 3 axes
-    model.value.rotation.x += delta * 0.5;  // Vitesse X
-    model.value.rotation.y += delta * 0.3;  // Vitesse Y
-    model.value.rotation.z += delta * 0.2;  // Vitesse Z
+    // Rotation en fonction du scroll
+    const rotation = window.scrollY * 0.001;
+    model.value.rotation.y = rotation;
   }
-
   renderer.value.render(scene.value, camera.value);
-}
-
-function startAnimation() {
-  if (!animationId) {
-    animate();
-  }
 }
 
 function onWindowResize() {
   camera.value.aspect = window.innerWidth / window.innerHeight;
   camera.value.updateProjectionMatrix();
   renderer.value.setSize(window.innerWidth, window.innerHeight);
+  renderer.value.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 }
 
 onMounted(() => {
   initThree();
   loadModel();
+  onWindowResize();
 });
 
 onBeforeUnmount(() => {
-  if (animationId) {
-    cancelAnimationFrame(animationId);
-    animationId = null;
-  }
   window.removeEventListener('resize', onWindowResize);
-  if (renderer.value) renderer.value.dispose();
+  window.removeEventListener('scroll', onScroll);
+
+  if (animationId) cancelAnimationFrame(animationId);
+
+  if (renderer.value) {
+    if (renderer.value.domElement.parentNode) {
+      renderer.value.domElement.parentNode.removeChild(renderer.value.domElement);
+    }
+    renderer.value.dispose();
+  }
+
   if (model.value) {
     model.value.traverse((child) => {
       if (child.isMesh) {
@@ -119,7 +159,7 @@ onBeforeUnmount(() => {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   z-index: -1;
   pointer-events: none;

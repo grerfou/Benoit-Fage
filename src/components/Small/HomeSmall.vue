@@ -1,20 +1,27 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import TroiD from './PageComponents/TroiD.vue'
-import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 
-const originalText = 'Creative Coder  ~  Artist'
+gsap.registerPlugin(ScrollTrigger)
+
+const originalText = 'CreativeCoder~Artist'
 const glitchChars = '!@#$%^&*()_+{}[]<>?/\\|~'
+const glitchedText = ref(originalText.split(''))
 
-const words = originalText.split(' ')
-const glitchedWords = ref(words.map(word => word.split('')))
+// Couleurs différentes pour chaque lettre
+const colors = [
+  '#c03f13' 
+]
 
-function glitchText(word, glitchCount = 2) {
-  const chars = [...word]
+let glitchInterval = null
+
+function glitchText(text, glitchCount = 3) {
+  const chars = text.split('')
   const indices = []
 
-  while (indices.length < glitchCount && indices.length < chars.length) {
+  while (indices.length < glitchCount) {
     const randIndex = Math.floor(Math.random() * chars.length)
     if (!indices.includes(randIndex) && chars[randIndex] !== ' ') {
       indices.push(randIndex)
@@ -22,40 +29,50 @@ function glitchText(word, glitchCount = 2) {
   }
 
   return chars.map((char, i) =>
-    indices.includes(i) ? glitchChars[Math.floor(Math.random() * glitchChars.length)] : char
+    indices.includes(i)
+      ? glitchChars[Math.floor(Math.random() * glitchChars.length)]
+      : char
   )
 }
 
-let glitchInterval = null
-
 onMounted(async () => {
   glitchInterval = setInterval(() => {
-    glitchedWords.value = glitchedWords.value.map(word => glitchText(word, 2))
+    glitchedText.value = glitchText(originalText, 3)
     setTimeout(() => {
-      glitchedWords.value = words.map(word => word.split(''))
-    }, 200)
-  }, 900)
+      glitchedText.value = originalText.split('')
+    }, 900)
+  }, 600)
 
   await nextTick()
 
+  const letters = document.querySelectorAll('.letter')
+
   gsap.fromTo(
-    '.letter',
-    {
-      x: -100,
-      opacity: 0,
-      filter: 'blur(3px)',
-      rotateY: 90,
-    },
+    letters,
+    { x: 0, opacity: 0, filter: 'blur(3px)', rotateY: 90 },
     {
       x: 0,
       opacity: 1,
-      filter: 'blur(0px)',
+      filter: 'blur(1.0px)',
       rotateY: 0,
       ease: 'back.out(1.7)',
       duration: 1.2,
-      stagger: {
-        each: 0.05,
-        from: 'start',
+      stagger: 0.05,
+      onComplete: () => {
+        gsap.to(letters, {
+          scrollTrigger: {
+            trigger: '.parentElement',
+            start: 'top top',
+            //end: 'bottom 80%',
+            end: '+=500',
+            pin: true,
+            scrub: true,
+          },
+          x: -50,
+          opacity: 0,
+          stagger: 0.95,
+          ease: 'none',
+        })
       },
     }
   )
@@ -63,51 +80,61 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   clearInterval(glitchInterval)
+  ScrollTrigger.getAll().forEach(t => t.kill())
 })
 </script>
 
 <template>
-  <FullScreenMenu />
   <TroiD :modelDisplayTime="3000" />
 
-  <div class="parentElement">
-    <div class="size glitch-title">
-      <span class="word" v-for="(word, wIndex) in glitchedWords" :key="wIndex">
-        <span class="letter" v-for="(char, cIndex) in word" :key="cIndex">{{ char }}</span>
+  <div class="parentElement animated-border">
+    <div class="glitch-title">
+      <span 
+        v-for="(char, index) in glitchedText" 
+        :key="index" 
+        class="letter"
+      >
+        {{ char }}
       </span>
     </div>
-    <div class="item item6 croix"></div>
+
+    <div class="filler-content" />
   </div>
 </template>
 
 <style scoped>
-@import './../../assets/LargeComponent.css';
-
-.size {
-  padding-top: 0;
+.parentElement {
+  position: relative;
+  height: 100vh;
+  margin-top: 1rem;
 }
 
 .glitch-title {
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: white;
+  z-index: 10;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   font-family: 'Terminal_Grotesque', monospace;
   font-size: clamp(3rem, 5vw + 1rem, 10rem);
-  max-width: 90vw;
-  backface-visibility: hidden;
-  gap: 0.3em;
-}
-
-.word {
-  white-space: nowrap; /* Empêche la coupure des mots */
-  display: inline-flex;
-  gap: 0.05em;
+  padding-top: 4rem;
+  pointer-events: none;
+  background-color: transparent;
 }
 
 .letter {
   display: inline-block;
   backface-visibility: hidden;
   min-width: 0.5ch;
+  padding: 0 0.15em;
+  border-radius: 0.1em;
+  color: black;
+}
+
+.filler-content {
+  height: 180vh;
 }
 </style>
 

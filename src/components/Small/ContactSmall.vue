@@ -1,111 +1,114 @@
 <script setup>
 import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
+import { onMounted, onBeforeUnmount } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { TextPlugin } from 'gsap/TextPlugin'
+
+gsap.registerPlugin(ScrollTrigger, TextPlugin)
+
+onMounted(() => {
+  const elements = gsap.utils.toArray('.scramble')
+
+  elements.forEach(el => {
+    const originalText = el.getAttribute('data-text') || ''
+    const htmlText = originalText.replace(/\\n/g, '<br>')
+    el.innerHTML = ''
+
+    gsap.fromTo(
+      el,
+      { text: { value: '', innerHTML: true, scrambleText: true } },
+      {
+        text: {
+          value: htmlText,
+          delimiter: '',
+          innerHTML: true,
+          scrambleText: {
+            chars: '!@#%&_-+=?<>',
+            speed: 0.9,
+            revealDelay: 0.9,
+            tweenLength: false,
+          },
+        },
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+        duration: 4,
+        ease: 'power2.out',
+      }
+    )
+  })
+})
+
+onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+})
 </script>
 
-
-
 <template>
+  <div class="content">
 
-  <FullScreenMenu />
-  <div class="parentElement">
+    <h3 class="Title scramble" data-text="CreativeProcess, Etitcs works"></h3>
+    <p class="scramble" data-text="Hello and thank you for reading these few lines to get to know me a little better, “both in my work and in my artistic practice” I like to play with experimentation and iteration, I like to go back and forth, try, take back, add, remove, modify, change until I get a satisfactory result. I also have a strong ethical interest in all my work, especially environmental and human concerns. I'm passionate about experimental, light-hearted or more classic graphics, and thinking about how to interact with them to give them movement and life. My main medium is FrontEnd and creative programming in general, but I'm capable of doing any kind of 3D, and thinking about different kinds of physical or digital interaction. In short, I seem to have a rather versatile profile that doesn't close any door, always ready for new projects, passionate about programming and creativity, I'll always be able to meet a need.\nIf you are interested, some manifesto I like :&lt;a href=&quot;https://archive.org/stream/The_Conscience_of_a_Hacker/hackersmanifesto.txt&quot; target=&quot;_blank&quot;&gt;The Conscience of a Hacker&lt;/a&gt;,&lt;br&gt;&lt;a href=&quot;https://kairos.technorhetoric.net/12.3/topoi/stolley/&quot; target=&quot;_blank&quot;&gt;The_Lofi_Declaration&lt;/a&gt;,&lt;br&gt;&lt;a href=&quot;https://archive.org/details/GuerillaOpenAccessManifesto&quot; target=&quot;_blank&quot;&gt;Guerilla Open Access Manifesto&lt;/a&gt;"></p>
 
+    <h3 class="Title scramble" data-text="Tools"></h3>
+    <p class="scramble" data-text="Blender, Vuejs, Threejs, Vanillajs, Vercel, Onrender, Processing, C/C++, Raylib, Inkscape, NeoVim, Pureref, Darktable, Arduino, CMake , Meshroom, Strapi, and a lot of small personnal tools (new page coming son)"></p>
 
-    <div class="marg">
-      <h3 class="Title">Typo</h3>
-        <a href="https://www.weltkern.com/shop/detail-typeface/burns"><p>TWKBurns</p></a>
-        <a href="https://power-type.com/neue-power/"><p>NeuePowerTrial</p></a>
-        <a href="https://velvetyne.fr/fonts/terminal-grotesque/"><p>Terminal_Grotesque</p></a>
+    <h3 class="Title scramble" data-text="Curriculum Vitae"></h3>
+    <p class="scramble" data-text="DNSEP √ 2023–2025 ¬ ESADSE\nERASMUS √ 2023 ¬ HfG Karlsruhe\nDNA √ 2020–2023 ¬ ESADSE\nPrépa √ 2019–2020 ¬ Pass'art"></p>
 
-    </div>
-
-    <div class="inf">
-      <h3 class="Title">Information</h3> 
-      <p>E-mail : benoit.fage@icloud.com</p>
-      <p>Phone : +33 6.18.96.31.98</p>
-      <p>Location : FR</p>
-    </div>
-
-    <div>
-      <h3 class="Title">Curriculum Vitae</h3>
-      <ul>
-        <li>
-          <p>DNSEP &nbsp; &nbsp; &nbsp; &nbsp; √  &nbsp; <span class="tt"> September 2023 to July 2025 </span>&nbsp; ¬ <a href="https://www.esadse.fr/en/home/">Saint-Etienne Higher School of Art and Design</a></p>
-          <p>ERASMUS &nbsp; √ &nbsp; <span class="tt"> May 2023 to August 2023 </span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ¬ <a href="https://hfg-karlsruhe.de/"> Hochschule für Gestaltung karlsruhe</a></p>
-          <p>DNA &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; √ &nbsp; <span class="tt">October 2020 to July 2023 </span>&nbsp; &nbsp; &nbsp; &nbsp;¬ <a href="https://www.esadse.fr/en/home/">Saint-Etienne Higher School of Art and Design </a></p>
-          <p>Prépa &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;√ &nbsp;<span class="tt">September 2019 to June 2020 </span>&nbsp;¬ Pass'art</p>
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <h3 class="Title">Tools</h3>
-      <p>Blender, Vuejs, Threejs, Vanillajs, Vercel, Onrender, Processing, Raylib, Inkscape, NeoVim, Pureref, Darktable, Arduino, CMake , Meshroom, and a lot of small personnal tools (new page coming son)</p>
-    </div>
-
-    <div>
-      <h3 class="Title">CreativeProcess, Etitcs works</h3>
-        <p class="fivet">
-
-          Hello and thank you for reading these few lines to get to know me a little better, “both in my work and in my artistic practice” I like to play with experimentation and iteration, I like to go back and forth, try, take back, add, remove, modify, change until I get a satisfactory result.
-I also have a strong ethical interest in all my work, especially environmental and human concerns. I'm passionate about experimental, light-hearted or more classic graphics, and thinking about how to interact with them to give them movement and life. 
-My main medium is FrontEnd and creative programming in general, but I'm capable of doing any kind of 3D, and thinking about different kinds of physical or digital interaction. 
-In short, I seem to have a rather versatile profile that doesn't close any door, always ready for new projects, passionate about programming and creativity, I'll always be able to meet a need.
-          <br>
-          <br>
-            If you are interested, some manifesto I like : <br><a href="https://archive.org/stream/The_Conscience_of_a_Hacker/hackersmanifesto.txt" target="_blank">The Conscience of a Hacker</a>,<br> <a href="https://kairos.technorhetoric.net/12.3/topoi/stolley/" target="_blank">The_Lofi_Declaration</a>,<br> <a href="https://archive.org/details/GuerillaOpenAccessManifesto" target="_blank">Guerilla Open Access Manifesto</a>
-        </p>
-    </div>
-
-    <div>
-      <h2 class="Title">Who am I ?</h2>
-      <p>
-        My name is Benoit, i'm a young digital Designer/Artist,  Passionate about computers in many senses of the word, I have used them to create different types of graphics .
-      </p>
-    </div>
-
+    <h3 class="Title scramble" data-text="Information"></h3>
+    <p class="scramble" data-text="E-mail : &lt;a href=&quot;mailto:benoit.fage@icloud.com&quot;&gt;benoit.fage@icloud.com&lt;/a&gt;\nPhone : +33 6.18.96.31.98\nLocation : FR"></p>
   </div>
 </template>
 
-
-
-
 <style scoped>
-@import './../../assets/SmallComponent.css';
-
-.Title
-{
-  font-family: TWKBurns-Light;
+@font-face {
+  font-family: "test";
+  src: url("/public/font/IBMPlexSans-LightItalic.ttf");
 }
 
-.fivet
-{
-  text-align: justify;
+/* Ne force aucune hauteur, ni scroll, ni overflow */
+.content {
+  width: 100%;
+  height: 250vh;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  overflow: hidden;
 }
 
-p
-{
-  font-size: 0.9rem;
-  font-family: TWKBurns-Regular;
+.scramble {
+  white-space: normal;
 }
 
-a
-{
+.Title {
+  font-size: 1.5rem;
+  font-family: 'test';
+  margin: 0;
+}
+
+p {
+  font-size: 1rem;
+  font-family: 'test';
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Liens dans les textes animés */
+:deep(a) {
   color: rgba(0, 0, 0, 0.7);
   text-decoration: none;
 }
 
-.inf
-{
-  line-height: 0.5rem;
+:deep(a):hover {
+  text-decoration: underline;
 }
 
-
-.marg
-{
-  margin: 0;
-  padding: 0;
-  line-height: 0.5rem; 
-}
 
 </style>
 

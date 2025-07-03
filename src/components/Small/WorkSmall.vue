@@ -1,17 +1,14 @@
 <script setup>
-import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
 import ProjectMenu from './PageComponents/ProjectMenu.vue';
 </script>
 
 
 
 <template>
-
   <FullScreenMenu />
   <div class="parentElement">
     <ProjectMenu/>
   </div>
-
 </template>
 
 
@@ -25,6 +22,5 @@ export default {
 
 
 <style scoped>
-@import './../../assets/SmallComponent.css';
 </style>
 

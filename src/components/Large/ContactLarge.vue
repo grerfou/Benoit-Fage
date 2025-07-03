@@ -1,176 +1,120 @@
 <script setup>
 import FullScreenMenu from './PageComponents/FullScreenMenu.vue'
+import { onMounted, onBeforeUnmount } from 'vue'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { TextPlugin } from 'gsap/TextPlugin'
+
+gsap.registerPlugin(ScrollTrigger, TextPlugin)
+
+onMounted(() => {
+  const elements = gsap.utils.toArray('.scramble')
+
+  elements.forEach(el => {
+    let originalText = el.getAttribute('data-text') || ''
+    // Remplace \n par <br> pour HTML
+    const htmlText = originalText.replace(/\\n/g, '<br>')
+
+    // Vide le contenu avant animation
+    el.innerHTML = ''
+
+    gsap.fromTo(
+      el,
+      { text: { value: '', innerHTML: true, scrambleText: true } },
+      {
+        text: {
+          value: htmlText,
+          delimiter: '',
+          innerHTML: true,
+          scrambleText: {
+            chars: '!@#%&_-+=?<>',
+            speed: 0.9,
+            revealDelay: 0.9,
+            tweenLength: false,
+          },
+        },
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 90%',
+          toggleActions: 'play none none none',
+        },
+        duration: 4,
+        ease: 'power2.out',
+      }
+    )
+  })
+})
+
+onBeforeUnmount(() => {
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+})
 </script>
 
-
-
 <template>
+  <div class="container">
 
-  <FullScreenMenu />
-  <div class="parentElement">
+    <h3 class="Title scramble" data-text="CreativeProcess, Etitcs works"></h3>
 
-    <div class="graphOne">
-      <div class="One">
-        <h3 class="Title">Typo</h3>
-        <a href="https://www.weltkern.com/shop/detail-typeface/burns" target="_blank"><p>TWKBurns</p></a>
-        <a href="https://power-type.com/neue-power/" target="_blank"><p>NeuePowerTrial</p></a>
-        <a href="https://velvetyne.fr/fonts/terminal-grotesque/" target="_blank"><p>Terminal_Grotesque</p></a>
-      </div>
+    <p class="scramble" data-text="Hello and thank you for reading these few lines to get to know me a little better, “both in my work and in my artistic practice” I like to play with experimentation and iteration, I like to go back and forth, try, take back, add, remove, modify, change until I get a satisfactory result. I also have a strong ethical interest in all my work, especially environmental and human concerns. I'm passionate about experimental, light-hearted or more classic graphics, and thinking about how to interact with them to give them movement and life. My main medium is FrontEnd and creative programming in general, but I'm capable of doing any kind of 3D, and thinking about different kinds of physical or digital interaction. In short, I seem to have a rather versatile profile that doesn't close any door, always ready for new projects, passionate about programming and creativity, I'll always be able to meet a need.\nIf you are interested, some manifesto I like :&lt;a href=&quot;https://archive.org/stream/The_Conscience_of_a_Hacker/hackersmanifesto.txt&quot; target=&quot;_blank&quot;&gt;The Conscience of a Hacker&lt;/a&gt;,&lt;br&gt;&lt;a href=&quot;https://kairos.technorhetoric.net/12.3/topoi/stolley/&quot; target=&quot;_blank&quot;&gt;The_Lofi_Declaration&lt;/a&gt;,&lt;br&gt;&lt;a href=&quot;https://archive.org/details/GuerillaOpenAccessManifesto&quot; target=&quot;_blank&quot;&gt;Guerilla Open Access Manifesto&lt;/a&gt;"></p>
 
-      <div class="Two">
-        <h3 class="Title">Information</h3> 
-        <p>E-mail : benoit.fage@icloud.com</p>
-        <p>Phone : +33 6.18.96.31.98</p>
-        <p>Location : FR</p>
-      </div>
-    </div>
+    <h3 class="Title scramble" data-text="Tools"></h3>
+    <p class="scramble" data-text="Blender, Vuejs, Threejs, Vanillajs, Vercel, Onrender, Processing, C/C++, Raylib, Inkscape, NeoVim, Pureref, Darktable, Arduino, CMake , Meshroom, Strapi, and a lot of small personnal tools (new page coming son)"></p>
 
+    <h3 class="Title scramble" data-text="Curriculum Vitae"></h3>
+    <p class="scramble" data-text="DNSEP √ 2023–2025 ¬ ESADSE\nERASMUS √ 2023 ¬ HfG Karlsruhe\nDNA √ 2020–2023 ¬ ESADSE\nPrépa √ 2019–2020 ¬ Pass'art"></p>
 
-
-    <div class="Three">
-      <h3 class="Title">Curriculum Vitae</h3>
-      <ul>
-        <li>
-          <p>DNSEP &nbsp; &nbsp; &nbsp; &nbsp; √  &nbsp; <span class="tt"> September 2023 to July 2025 </span>&nbsp; ¬ <a href="https://www.esadse.fr/en/home/" target="_blank">Saint-Etienne Higher School of Art and Design</a></p>
-          <p>ERASMUS &nbsp; √ &nbsp; <span class="tt"> May 2023 to August 2023 </span>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ¬ <a href="https://hfg-karlsruhe.de/" target="_blank"> Hochschule für Gestaltung karlsruhe</a></p>
-          <p>DNA &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; √ &nbsp; <span class="tt">October 2020 to July 2023 </span>&nbsp; &nbsp; &nbsp; &nbsp;¬ <a href="https://www.esadse.fr/en/home/" target="_blank">Saint-Etienne Higher School of Art and Design </a></p>
-          <p>Prépa &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;√ &nbsp;<span class="tt">September 2019 to June 2020 </span>&nbsp;¬ Pass'art</p>
-        </li>
-      </ul>
-    </div>
-
-
-
-
-    <div class="graph">
-      <div class="Four">
-        <h3 class="Title">Tools</h3>
-        <p class="Tools">Blender, Vuejs, Threejs, Vanillajs, Vercel, Onrender, Processing, Raylib, Inkscape, NeoVim, Pureref, Darktable, Arduino, CMake , Meshroom, and a lot of small personnal tools (new page coming son)
-        </p>
-      </div>
-
-      <div class="Five">
-        <h3 class="Title">CreativeProcess, Etitcs works</h3>
-        <p class="fivet">
-
-          Hello and thank you for reading these few lines to get to know me a little better, “both in my work and in my artistic practice” I like to play with experimentation and iteration, I like to go back and forth, try, take back, add, remove, modify, change until I get a satisfactory result.
-I also have a strong ethical interest in all my work, especially environmental and human concerns. I'm passionate about experimental, light-hearted or more classic graphics, and thinking about how to interact with them to give them movement and life. 
-My main medium is FrontEnd and creative programming in general, but I'm capable of doing any kind of 3D, and thinking about different kinds of physical or digital interaction. 
-In short, I seem to have a rather versatile profile that doesn't close any door, always ready for new projects, passionate about programming and creativity, I'll always be able to meet a need.
-          <br>
-          <br>
-            If you are interested, some manifesto I like : <a href="https://archive.org/stream/The_Conscience_of_a_Hacker/hackersmanifesto.txt" target="_blank">The Conscience of a Hacker</a>, <a href="https://kairos.technorhetoric.net/12.3/topoi/stolley/" target="_blank">The_Lofi_Declaration</a>, <a href="https://archive.org/details/GuerillaOpenAccessManifesto" target="_blank">Guerilla Open Access Manifesto</a>
-        </p>
-      </div>
-    </div>
-
-      <div class="Six">
-        <h2 class="Title">Who am I ?</h2>
-        <p class="pres">
-        My name is Benoit, i'm a young digital Designer/Artist,  Passionate about computers in many senses of the word, I have used them to create different types of graphics .
-        </p>
-      </div>
-
+    <h3 class="Title scramble" data-text="Information"></h3>
+    <p class="scramble" data-text="E-mail : &lt;a href=&quot;mailto:benoit.fage@icloud.com&quot;&gt;benoit.fage@icloud.com&lt;/a&gt;\nPhone : +33 6.18.96.31.98\nLocation : FR"></p>
 
   </div>
 </template>
 
-
-
-
 <style scoped>
-@import './../../assets/SmallComponent.css';
-
-.Title
-{
-  font-size: 2rem;
-  font-family: TWKBurns-Light;
+@font-face {
+  font-family: "test";
+  src: url("/public/font/IBMPlexSans-LightItalic.ttf");
 }
 
-.tt
-{
-  font-family: TWKBurns-Light;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
 }
 
-p
-{
-  font-size: 1.1rem;
-  font-family: TWKBurns-Regular;
+.container {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  padding: 3rem;
+  white-space: normal;
 }
 
-a
-{
+.scramble {
+  white-space: normal;
+}
+
+/* Style pour les liens dans le contenu animé */
+:deep(a) {
   color: rgba(0, 0, 0, 0.7);
   text-decoration: none;
 }
 
-ul
-{
-  line-height: 0.2rem;
+:deep(a):hover {
+  text-decoration: underline;
 }
 
-.graph
-{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: normal;
-  align-content: normal;
-  margin-bottom: 10vh;
-  margin-top: 5vh;
+.Title {
+  font-size: 2rem;
+  font-family: 'test';
 }
 
-.graphOne
-{
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: normal;
-  align-content: normal;
-  width: 100%;
-  margin-top: 10vh;
-  line-height: 0.7rem;
+p {
+  font-size: 1.1rem;
+  font-family: 'test';
 }
-
-.pres
-{
-  text-align: center;
-}
-
-.Tools
-{
-  text-align: justify;
-}
-
-.Two
-{
-  text-align: end;
-}
-
-.Four
-{
-  padding-right: 10%;
-}
-
-.Five
-{
-  text-align: end;
-}
-
-.fivet
-{
-  text-align: justify;
-}
-
-.Six
-{
-  text-align: center;
-  width: 100%;
-}
-
-
-
 </style>
 
