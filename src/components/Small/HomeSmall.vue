@@ -63,7 +63,7 @@ onMounted(async () => {
           scrollTrigger: {
             trigger: '.parentElement',
             start: 'top top',
-            //end: 'bottom 80%',
+            end: 'bottom 80%',
             end: '+=500',
             pin: true,
             scrub: true,
@@ -103,6 +103,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+
 .parentElement {
   position: relative;
   height: 100vh;
@@ -113,16 +114,23 @@ onBeforeUnmount(() => {
   top: 0;
   left: 0;
   width: 100%;
-  background-color: white;
+  max-width: 90vw;               /* ✅ limite largeur sur petits écrans */
+  margin: 0 auto;                /* ✅ centre le texte */
+  padding-top: 9rem;
+  background-color: transparent;
   z-index: 10;
+
   display: flex;
+  flex-wrap: wrap;              /* ✅ autorise les retours à la ligne */
   justify-content: center;
+  text-align: center;
+
   font-family: 'Terminal_Grotesque', monospace;
   font-size: clamp(3rem, 5vw + 1rem, 10rem);
-  padding-top: 4rem;
   pointer-events: none;
-  background-color: transparent;
+  word-break: break-word;
 }
+
 
 .letter {
   display: inline-block;
@@ -133,8 +141,6 @@ onBeforeUnmount(() => {
   color: black;
 }
 
-.filler-content {
-  height: 180vh;
-}
 </style>
+
 

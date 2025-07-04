@@ -134,7 +134,6 @@ span {
 /* Sections */
 .section {
   width: 100vw;
-  margin-top: 1rem;
 }
 </style>
 
