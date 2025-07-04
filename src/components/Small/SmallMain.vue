@@ -27,8 +27,8 @@
 import { onMounted, onBeforeUnmount } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import HomeSmall from './HomeSmall.vue'
-import WorkLarge from './WorkLarge.vue'
-import ContactLarge from './ContactLarge.vue'
+import WorkSmall from './WorkSmall.vue'
+import ContactSmall from './ContactSmall.vue'
 import Lenis from '@studio-freight/lenis'
 
 const router = useRouter()
