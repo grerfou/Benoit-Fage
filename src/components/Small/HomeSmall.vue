@@ -53,7 +53,7 @@ onMounted(async () => {
     {
       x: 0,
       opacity: 1,
-      filter: 'blur(1.0px)',
+      filter: 'blur(0.5px)',
       rotateY: 0,
       ease: 'back.out(1.7)',
       duration: 1.2,

@@ -48,7 +48,30 @@ onMounted(() => {
 
 <template>
 
-<FullScreenMenu />
+    <div>
+    <nav class="FlexContainer">
+      <div class="flex-item">Benoit Fage</div>
+        <div class="menu">
+            <span @click="scrollTo('home')">Home/</span>
+            <span @click="scrollTo('work')">Work/</span>
+            <span @click="scrollTo('contact')">Contact/</span>
+        </div>
+       </nav>
+
+        <section id="home" class="section">
+            <HomeSmall />
+        </section>
+
+        <section id="work" class="section">
+            <WorkSmall />
+        </section>
+
+        <section id="contact" class="section">
+            <ContactSmall />
+        </section>
+    </div>
+
+
   <div class="parentElement">
 
     <!--
@@ -104,6 +127,29 @@ onMounted(() => {
 </template>
   
 <style scoped>
+
+.FlexContainer {
+  font-size: 1rem;
+  font-family: 'test';
+  display: flex;
+  justify-content: space-between;
+  position: fixed; /* ✅ La nav reste visible même pendant le scroll */
+  z-index: 1100;
+  width: 100vw;
+  top: 0;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.flex-item {
+  font-family: "test";
+  font-weight: 500;
+}
+
+.section {
+  width: 100vw;
+  margin-top: 1rem;
+}
 
 .parentElement
 {

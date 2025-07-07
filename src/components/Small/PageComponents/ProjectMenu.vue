@@ -1,23 +1,35 @@
 <template>
   <div class="portfolio-wrapper">
-    <!-- Filtres -->
-    <div class="filters">
+    <!-- Dropdown filtre -->
+    <div class="filters" ref="dropdownRef">
       <button
-        v-for="cat in categories"
-        :key="cat"
-        @click="activeCategory = cat"
-        :class="{ active: activeCategory === cat }"
+        class="dropdown-btn"
+        @click.stop="toggleDropdown"
+        type="button"
+        aria-haspopup="listbox"
+        :aria-expanded="dropdownOpen"
       >
-        {{ cat }}
+        {{ activeCategory === 'All' ? 'All Projects' : activeCategory }}
+        <span class="arrow" :class="{ open: dropdownOpen }">▾</span>
       </button>
+
+      <ul v-if="dropdownOpen" class="dropdown-menu" role="listbox" tabindex="-1">
+        <li
+          v-for="cat in categories"
+          :key="cat"
+          role="option"
+          :aria-selected="activeCategory === cat"
+          :class="{ active: activeCategory === cat }"
+          @click="selectCategory(cat)"
+        >
+          {{ cat }}
+        </li>
+      </ul>
     </div>
 
     <!-- En-têtes -->
     <div class="header-row">
       <span>Title</span>
-      <span>Year</span>
-      <span>Type</span>
-      <span>Description</span>
       <span>Image</span>
     </div>
 
@@ -30,14 +42,11 @@
         @click="goToProject(index)"
       >
         <div class="text-info">
-          <span class="title">{{ project.title }}</span>
-          <span class="year">{{ project.year }}</span>
-          <span class="type">{{ project.type }}</span>
-          <span class="description-wrapper">
-            <span class="description-scroll">
-              {{ project.description }}
-            </span>
-          </span>
+          <div class="title">{{ project.title }}</div>
+          <div class="meta">
+            <span class="type">{{ project.type }}</span>
+            <span class="year">{{ project.year }}</span>
+          </div>
         </div>
         <div class="image-wrapper">
           <img :src="project.image" :alt="project.title" />
@@ -48,14 +57,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
 const activeCategory = ref('All')
-
-const categories = ['All', 'Art', 'Web', 'Writing', 'Software/Tools']
+const dropdownOpen = ref(false)
+const categories = ['All', 'Art', 'Web', 'Writing', 'Software']
 
 const projects = ref([
   {
@@ -90,9 +99,32 @@ const filteredProjects = computed(() => {
 })
 
 function goToProject(index) {
-  // Navigue vers le projet en fonction de l'index
   router.push({ name: 'ProjectSmall', params: { id: index } })
 }
+
+function toggleDropdown() {
+  dropdownOpen.value = !dropdownOpen.value
+}
+
+function selectCategory(cat) {
+  activeCategory.value = cat
+  dropdownOpen.value = false
+}
+
+const dropdownRef = ref(null)
+function handleClickOutside(event) {
+  if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
+    dropdownOpen.value = false
+  }
+}
+
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside)
+})
+
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside)
+})
 </script>
 
 <style scoped>
@@ -104,35 +136,82 @@ function goToProject(index) {
   font-family: 'IBM', sans-serif;
 }
 
-/* Filtres */
+/* Filtres - Dropdown */
 .filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
   margin-bottom: 2rem;
+  width: max-content;
+  position: relative;
+  user-select: none;
 }
 
-.filters button {
+.dropdown-btn {
   background: none;
   border: 2px solid black;
   border-radius: 20px;
   padding: 0.5rem 1rem;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
+  font-family: 'IBM', sans-serif;
   transition: background 0.6s, color 0.6s, border 0.6s, padding 0.7s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 130px;
 }
 
-.filters button:hover,
-.filters button.active {
+.dropdown-btn:hover,
+.dropdown-btn:focus {
   background: black;
   color: white;
   border-color: rgb(192, 63, 19);
+  outline: none;
+}
+
+.arrow {
+  transition: transform 0.3s ease;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  left: 0;
+  background: white;
+  border: 1px solid black;
+  border-radius: 21px;
+  list-style: none;
+  padding: 0.0rem 0;
+  margin: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  z-index: 100;
+  min-width: 130px;
+}
+
+.dropdown-menu li {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'IBM', sans-serif;
+  transition: background 0.3s, color 0.3s;
+  user-select: none;
+}
+
+.dropdown-menu li:hover,
+.dropdown-menu li.active {
+  background: black;
+  color: white;
+  border-radius: 20px;
 }
 
 /* En-têtes */
 .header-row {
   display: grid;
-  grid-template-columns: 1fr 0.5fr 0.7fr 2fr 100px;
+  grid-template-columns: 1fr 100px;
   padding: 0.5rem 0;
   font-weight: bold;
   border-bottom: 1px solid #ccc;
@@ -146,7 +225,7 @@ function goToProject(index) {
 .project-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; /* aligner texte en haut */
   padding: 0.5rem 0;
   cursor: pointer;
   border-bottom: 1px solid #ccc;
@@ -155,42 +234,30 @@ function goToProject(index) {
 
 .text-info {
   flex: 1 1 auto;
-  display: grid;
-  grid-template-columns: 1fr 0.5fr 0.7fr 2fr;
-  gap: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* aligner contenu à gauche */
 }
 
-.text-info span {
+.text-info .title {
   font-weight: normal;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   overflow-wrap: break-word;
   word-break: break-word;
+  margin-bottom: 0.25rem;
 }
 
-.description-wrapper {
-  overflow: hidden;
-  position: relative;
-  font-family: 'IBM-Medium', sans-serif;
+.text-info .meta {
+  font-size: 0.85rem;
+  color: #555;
+  display: flex;
+  flex-direction: column; /* colonne pour type au-dessus de year */
+  gap: 0.1rem;
 }
 
-.description-scroll {
-  display: inline-block;
-  white-space: nowrap;
-  transform: translateX(0);
-  transition: transform 0.3s;
-}
-
-.project-row:hover .description-scroll {
-  animation: scroll-left 10s linear infinite;
-}
-
-@keyframes scroll-left {
-  from {
-    transform: translateX(0%);
-  }
-  to {
-    transform: translateX(-100%);
-  }
+.text-info .meta .year,
+.text-info .meta .type {
+  font-style: italic;
 }
 
 /* Image */
@@ -201,7 +268,7 @@ function goToProject(index) {
 }
 
 .image-wrapper img {
-  width: 100px;
+  width: 150px;
   height: auto;
   object-fit: cover;
 }
